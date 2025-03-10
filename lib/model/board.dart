@@ -51,4 +51,20 @@ class Board {
       }
     }
   }
+
+  void zeroPossibleMoves() {
+    for (int row = 0; row < 8; row++) {
+      for (int column = 0; column < 8; column++) {
+        if (board[row][column].showMarker == true) {
+          board[row][column].showMarker = false;
+        }
+      }
+    }
+  }
 }
+
+// class Tile {
+//   late Piece piece;
+
+//   Tile(this.piece);
+// }
