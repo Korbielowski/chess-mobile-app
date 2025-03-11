@@ -41,20 +41,39 @@ class Pawn extends Piece {
 
   @override
   void showPossibleMoves(Board board) {
-    if (isFirstMove && board.board[row + 2][column] is NoPiece) {
-      board.board[row + 2][column].showMarker = true;
-    }
+    print("Pawn row: $row, column: $column");
+    if (color == PieceColor.white) {
+      if (isFirstMove && board.board[row - 2][column] is NoPiece) {
+        board.board[row - 2][column].showMarker = true;
+      }
 
-    if (board.board[row + 1][column] is NoPiece) {
-      board.board[row + 1][column].showMarker = true;
-    }
+      if (board.board[row - 1][column] is NoPiece) {
+        board.board[row - 1][column].showMarker = true;
+      }
 
-    if (board.board[row + 1][column + 1] is! NoPiece) {
-      board.board[row + 1][column + 1].showMarker = true;
-    }
+      if (column + 1 < 7 && board.board[row - 1][column + 1] is! NoPiece) {
+        board.board[row - 1][column + 1].showMarker = true;
+      }
 
-    if (board.board[row + 1][column - 1] is! NoPiece) {
-      board.board[row + 1][column + 1].showMarker = true;
+      if (column - 1 > 0 && board.board[row - 1][column - 1] is! NoPiece) {
+        board.board[row - 1][column - 1].showMarker = true;
+      }
+    } else {
+      if (isFirstMove && board.board[row + 2][column] is NoPiece) {
+        board.board[row + 2][column].showMarker = true;
+      }
+
+      if (board.board[row + 1][column] is NoPiece) {
+        board.board[row + 1][column].showMarker = true;
+      }
+
+      if (column + 1 < 7 && board.board[row + 1][column + 1] is! NoPiece) {
+        board.board[row + 1][column + 1].showMarker = true;
+      }
+
+      if (column - 1 > 0 && board.board[row + 1][column - 1] is! NoPiece) {
+        board.board[row + 1][column - 1].showMarker = true;
+      }
     }
   }
 

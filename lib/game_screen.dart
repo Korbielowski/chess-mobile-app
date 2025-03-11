@@ -47,7 +47,7 @@ class GameScreen extends ConsumerWidget {
                       ? Center(child: board.board[row][column].image)
                       : null,
             ),
-            CircleWidget(),
+            CircleWidget(row, column),
           ],
         ),
       ),

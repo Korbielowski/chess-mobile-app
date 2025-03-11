@@ -1,7 +1,7 @@
 import 'package:chess/model/piece.dart';
 import 'package:flutter/material.dart';
 
-class Board {
+class Board extends ChangeNotifier {
   late List<List<Piece>> board;
 
   Board() {
@@ -65,7 +65,6 @@ class Board {
 
   void tileClicked(BuildContext context, int row, int column) {
     Piece piece = board[row][column];
-    print("${piece.row} ${piece.column}");
 
     if (piece is! NoPiece && piece.showMarker == false) {
       piece.showPossibleMoves(this);
