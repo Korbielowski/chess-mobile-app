@@ -1,4 +1,5 @@
 import 'package:chess/model/piece.dart';
+import 'package:flutter/material.dart';
 
 class Board {
   late List<List<Piece>> board;
@@ -61,10 +62,39 @@ class Board {
       }
     }
   }
+
+  void tileClicked(BuildContext context, int row, int column) {
+    Piece piece = board[row][column];
+    print("${piece.row} ${piece.column}");
+
+    if (piece is! NoPiece && piece.showMarker == false) {
+      piece.showPossibleMoves(this);
+    } else if (piece is! NoPiece && piece.showMarker == true) {
+      // piece.movePiece(board, , );
+      zeroPossibleMoves();
+    } else if (piece is NoPiece && piece.showMarker == false) {
+      zeroPossibleMoves();
+    } else if (piece is NoPiece && piece.showMarker == true) {
+      // piece.movePiece(board, markerRow, markerColumn)
+    }
+    // if (piece is Marker) {
+    //   piece.movePiece(board);
+    // } else {
+    //   piece.showMoves(board);
+    // }
+    // _clearMarkers();
+    // board[x - 1][y] = piece;
+    // board[x][y] = null;
+    // print(piece?.column);
+    // if (piece == null) {
+    //   return;
+    // }
+    // piece.showMoves(board);
+  }
 }
 
-// class Tile {
-//   late Piece piece;
+  // class Tile {
+  //   late Piece piece;
 
-//   Tile(this.piece);
-// }
+  //   Tile(this.piece);
+  // }

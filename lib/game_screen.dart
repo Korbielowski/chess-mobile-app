@@ -32,7 +32,7 @@ class GameScreen extends ConsumerWidget {
     row = (index / 8).floor();
     column = (index % 8);
     return GestureDetector(
-      onTap: () => _tileClicked(context, row, column, board),
+      onTap: () => board.tileClicked(context, row, column),
       child: GridTile(
         child: Stack(
           alignment: Alignment.center,
@@ -42,41 +42,15 @@ class GameScreen extends ConsumerWidget {
                 color: ((row + column) % 2 != 0) ? Colors.brown : Colors.white,
                 // border: Border.all(color: Colors.black, width: 0.5),
               ),
-              // child: Center(child: board.board[row][column].i),
+              child:
+                  (board.board[row][column] is! NoPiece)
+                      ? Center(child: board.board[row][column].image)
+                      : null,
             ),
             CircleWidget(),
           ],
         ),
       ),
     );
-  }
-
-  void _tileClicked(BuildContext context, int row, int column, Board board) {
-    Piece piece = board.board[row][column];
-    print("${piece.row} ${piece.column}");
-
-    if (piece is! NoPiece && piece.showMarker == false) {
-      piece.showPossibleMoves(board);
-    } else if (piece is! NoPiece && piece.showMarker == true) {
-      // piece.movePiece(board, , );
-      board.zeroPossibleMoves();
-    } else if (piece is NoPiece && piece.showMarker == false) {
-      board.zeroPossibleMoves();
-    } else if (piece is NoPiece && piece.showMarker == true) {
-      // piece.movePiece(board, markerRow, markerColumn)
-    }
-    // if (piece is Marker) {
-    //   piece.movePiece(board);
-    // } else {
-    //   piece.showMoves(board);
-    // }
-    // _clearMarkers();
-    // board[x - 1][y] = piece;
-    // board[x][y] = null;
-    // print(piece?.column);
-    // if (piece == null) {
-    //   return;
-    // }
-    // piece.showMoves(board);
   }
 }
