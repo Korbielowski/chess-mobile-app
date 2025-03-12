@@ -1,16 +1,21 @@
-# chess
+# Grand Chess
 
-A new Flutter project.
+This is a project for univeristy classes called Grand Chess. It's an app for playing chess offline with your friend or family.
 
-## Getting Started
+# Mile Stones
 
-This project is a starting point for a Flutter application.
+1. First Mile Stones
 
-A few resources to get you started if this is your first Flutter project:
+ - Basic UI
+ - All of the basic chess moves
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Second Mile Stones
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ - More advanced moves like en passant and castling
+ - Ability to change looks of the chess board and pieces
+
+3. Third Mile Stone
+
+ - Saving of games to PGN (Portable Game Notation)
+ - Loading of the last played game
+ - Game time
