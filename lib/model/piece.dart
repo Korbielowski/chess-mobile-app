@@ -12,7 +12,12 @@ abstract class Piece {
 
   Piece(this.row, this.column, this.color);
   void showPossibleMoves(Board board);
-  void movePiece(Board board, int markerRow, int markerColumn);
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  );
   void destroyPiece(Board board);
 }
 
@@ -22,7 +27,20 @@ class NoPiece extends Piece {
   @override
   void showPossibleMoves(Board board) {}
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {
+    board[piece.row][piece.column] = NoPiece(
+      piece.row,
+      piece.column,
+      piece.color,
+    );
+    board[destinationRow][destinationColumn] = piece;
+  }
+
   @override
   void destroyPiece(Board board) {}
 }
@@ -41,7 +59,6 @@ class Pawn extends Piece {
 
   @override
   void showPossibleMoves(Board board) {
-    print("Pawn row: $row, column: $column");
     if (color == PieceColor.white) {
       if (isFirstMove && board.board[row - 2][column] is NoPiece) {
         board.board[row - 2][column].showMarker = true;
@@ -78,7 +95,12 @@ class Pawn extends Piece {
   }
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -97,7 +119,12 @@ class Knight extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -116,7 +143,12 @@ class Bishop extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -135,7 +167,12 @@ class Rook extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -154,7 +191,12 @@ class Queen extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -173,7 +215,12 @@ class King extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(Board board, int markerRow, int markerColumn) {}
+  void movePiece(
+    List<List<Piece>> board,
+    Piece piece,
+    int destinationRow,
+    int destinationColumn,
+  ) {}
 
   @override
   void destroyPiece(Board board) {}

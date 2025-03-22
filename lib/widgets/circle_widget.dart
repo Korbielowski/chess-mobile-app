@@ -9,12 +9,9 @@ class CircleWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final board = ref.watch(riverpodBoard);
+    final board = ref.watch(boardProvider);
     return Offstage(
-      offstage:
-          (board.board[row][column].showMarker == true)
-              ? func(false)
-              : func(true),
+      offstage: (board.board[row][column].showMarker == true) ? false : true,
       child: Opacity(
         opacity: 0.35,
         child: Container(
@@ -28,9 +25,4 @@ class CircleWidget extends ConsumerWidget {
       ),
     );
   }
-}
-
-bool func(bool wartosc) {
-  print("Coś się stało");
-  return wartosc;
 }

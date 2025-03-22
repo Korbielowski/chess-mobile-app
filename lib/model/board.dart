@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Board extends ChangeNotifier {
   late List<List<Piece>> board;
+  late Piece selectedPiece;
 
   Board() {
     board = List.generate(
@@ -61,6 +62,7 @@ class Board extends ChangeNotifier {
         }
       }
     }
+    notifyListeners();
   }
 
   void tileClicked(BuildContext context, int row, int column) {
@@ -68,14 +70,18 @@ class Board extends ChangeNotifier {
 
     if (piece is! NoPiece && piece.showMarker == false) {
       piece.showPossibleMoves(this);
+      selectedPiece = piece;
     } else if (piece is! NoPiece && piece.showMarker == true) {
+      selectedPiece = piece;
       // piece.movePiece(board, , );
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == true) {
-      // piece.movePiece(board, markerRow, markerColumn)
+      piece.movePiece(board, selectedPiece, row, column);
+      zeroPossibleMoves();
     }
+    notifyListeners();
     // if (piece is Marker) {
     //   piece.movePiece(board);
     // } else {

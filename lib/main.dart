@@ -6,11 +6,11 @@ void main() {
   runApp(const ProviderScope(child: GrandChess()));
 }
 
-class GrandChess extends ConsumerWidget {
+class GrandChess extends StatelessWidget {
   const GrandChess({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Grand Chess",

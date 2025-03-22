@@ -10,7 +10,7 @@ class GameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final board = ref.watch(riverpodGame).board;
+    final board = ref.watch(boardProvider);
     return Scaffold(
       body: Container(
         alignment: Alignment.bottomCenter,
