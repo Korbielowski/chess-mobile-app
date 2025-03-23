@@ -67,14 +67,11 @@ class Board extends ChangeNotifier {
   void tileClicked(BuildContext context, int row, int column) {
     Piece piece = board[row][column];
 
-    // TODO: Maybe we can move zeroPossbileMoves function here
-
     if (piece is! NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
       piece.showPossibleMoves(this);
       selectedPiece = piece;
     } else if (piece is! NoPiece && piece.showMarker == true) {
-      // XD, does not work beacuse Pawn does not have implementation for movePiece method. I thought that we are calling NoPiece.movePiece method
       piece.movePiece(board, selectedPiece, row, column);
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == false) {
