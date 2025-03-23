@@ -138,10 +138,75 @@ class Bishop extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {}
+  void showPossibleMoves(Board board) {
+    int tColumn = column + 1;
+    int tRow = row + 1;
 
-  @override
-  void updateMe(int destinationRow, int destinationColumn) {}
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow++;
+      tColumn++;
+    }
+
+    tRow = row + 1;
+    tColumn = column - 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow++;
+      tColumn--;
+    }
+
+    tRow = row - 1;
+    tColumn = column + 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow--;
+      tColumn++;
+    }
+
+    tRow = row - 1;
+    tColumn = column - 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow--;
+      tColumn--;
+    }
+  }
 
   // @override
   // void destroyPiece(Board board) {}
@@ -202,4 +267,11 @@ class King extends Piece {
 
   // @override
   // void destroyPiece(Board board) {}
+}
+
+bool withinBounds(int row, int column) {
+  if ((row >= 0 && row <= 7) && (column >= 0 && column <= 7)) {
+    return true;
+  }
+  return false;
 }
