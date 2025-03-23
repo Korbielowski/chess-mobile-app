@@ -17,7 +17,24 @@ abstract class Piece {
     Piece piece,
     int destinationRow,
     int destinationColumn,
-  );
+  ) {
+    board[piece.row][piece.column] = NoPiece(
+      piece.row,
+      piece.column,
+      PieceColor.noColor,
+    );
+    if (board[destinationRow][destinationColumn] is! NoPiece) {
+      board[destinationRow][destinationColumn] = NoPiece(
+        destinationRow,
+        destinationColumn,
+        PieceColor.noColor,
+      );
+    }
+    piece.updateMe(destinationRow, destinationColumn);
+    board[destinationRow][destinationColumn] = piece;
+  }
+
+  void updateMe(int destinationRow, int destinationColumn);
   void destroyPiece(Board board);
 }
 
@@ -26,20 +43,9 @@ class NoPiece extends Piece {
 
   @override
   void showPossibleMoves(Board board) {}
+
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {
-    board[piece.row][piece.column] = NoPiece(
-      piece.row,
-      piece.column,
-      piece.color,
-    );
-    board[destinationRow][destinationColumn] = piece;
-  }
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -60,19 +66,27 @@ class Pawn extends Piece {
   @override
   void showPossibleMoves(Board board) {
     if (color == PieceColor.white) {
+      // First move by two rows
       if (isFirstMove && board.board[row - 2][column] is NoPiece) {
         board.board[row - 2][column].showMarker = true;
       }
 
-      if (board.board[row - 1][column] is NoPiece) {
+      // Normal move by one row
+      if (row - 1 >= 0 && board.board[row - 1][column] is NoPiece) {
         board.board[row - 1][column].showMarker = true;
       }
 
-      if (column + 1 < 7 && board.board[row - 1][column + 1] is! NoPiece) {
+      // Attack right
+      if (column + 1 <= 7 &&
+          board.board[row - 1][column + 1] is! NoPiece &&
+          board.board[row - 1][column + 1].color != color) {
         board.board[row - 1][column + 1].showMarker = true;
       }
 
-      if (column - 1 > 0 && board.board[row - 1][column - 1] is! NoPiece) {
+      // Attack left
+      if (column - 1 >= 0 &&
+          board.board[row - 1][column - 1] is! NoPiece &&
+          board.board[row - 1][column - 1].color != color) {
         board.board[row - 1][column - 1].showMarker = true;
       }
     } else {
@@ -84,23 +98,28 @@ class Pawn extends Piece {
         board.board[row + 1][column].showMarker = true;
       }
 
-      if (column + 1 < 7 && board.board[row + 1][column + 1] is! NoPiece) {
+      if (column + 1 <= 7 &&
+          board.board[row + 1][column + 1] is! NoPiece &&
+          board.board[row + 1][column + 1].color != color) {
         board.board[row + 1][column + 1].showMarker = true;
       }
 
-      if (column - 1 > 0 && board.board[row + 1][column - 1] is! NoPiece) {
+      if (column - 1 >= 0 &&
+          board.board[row + 1][column - 1] is! NoPiece &&
+          board.board[row + 1][column - 1].color != color) {
         board.board[row + 1][column - 1].showMarker = true;
       }
     }
   }
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  updateMe(destinationRow, destinationColumn) {
+    if (isFirstMove == true) {
+      isFirstMove = false;
+    }
+    row = destinationRow;
+    column = destinationColumn;
+  }
 
   @override
   void destroyPiece(Board board) {}
@@ -119,12 +138,7 @@ class Knight extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -143,12 +157,7 @@ class Bishop extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -167,12 +176,7 @@ class Rook extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -191,12 +195,7 @@ class Queen extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
@@ -215,12 +214,7 @@ class King extends Piece {
   void showPossibleMoves(Board board) {}
 
   @override
-  void movePiece(
-    List<List<Piece>> board,
-    Piece piece,
-    int destinationRow,
-    int destinationColumn,
-  ) {}
+  void updateMe(int destinationRow, int destinationColumn) {}
 
   @override
   void destroyPiece(Board board) {}
