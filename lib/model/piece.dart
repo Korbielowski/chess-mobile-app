@@ -51,8 +51,8 @@ class NoPiece extends Piece {
   @override
   void updateMe(int destinationRow, int destinationColumn) {}
 
-  @override
-  void destroyPiece(Board board) {}
+  // @override
+  // void destroyPiece(Board board) {}
 }
 
 class Pawn extends Piece {
@@ -119,10 +119,63 @@ class Knight extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {}
+  void showPossibleMoves(Board board) {
+    if (withinBounds(row + 2, column + 1) &&
+        (board.board[row + 2][column + 1] is NoPiece ||
+            (board.board[row + 2][column + 1] is! NoPiece &&
+                board.board[row + 2][column + 1].color != color))) {
+      board.board[row + 2][column + 1].showMarker = true;
+    }
 
-  @override
-  void updateMe(int destinationRow, int destinationColumn) {}
+    if (withinBounds(row + 2, column - 1) &&
+        (board.board[row + 2][column - 1] is NoPiece ||
+            (board.board[row + 2][column - 1] is! NoPiece &&
+                board.board[row + 2][column - 1].color != color))) {
+      board.board[row + 2][column - 1].showMarker = true;
+    }
+
+    if (withinBounds(row + 1, column + 2) &&
+        (board.board[row + 1][column + 2] is NoPiece ||
+            (board.board[row + 1][column + 2] is! NoPiece &&
+                board.board[row + 1][column + 2].color != color))) {
+      board.board[row + 1][column + 2].showMarker = true;
+    }
+
+    if (withinBounds(row - 1, column + 2) &&
+        (board.board[row - 1][column + 2] is NoPiece ||
+            (board.board[row - 1][column + 2] is! NoPiece &&
+                board.board[row - 1][column + 2].color != color))) {
+      board.board[row - 1][column + 2].showMarker = true;
+    }
+
+    if (withinBounds(row - 2, column + 1) &&
+        (board.board[row - 2][column + 1] is NoPiece ||
+            (board.board[row - 2][column + 1] is! NoPiece &&
+                board.board[row - 2][column + 1].color != color))) {
+      board.board[row - 2][column + 1].showMarker = true;
+    }
+
+    if (withinBounds(row - 2, column - 1) &&
+        (board.board[row - 2][column - 1] is NoPiece ||
+            (board.board[row - 2][column - 1] is! NoPiece &&
+                board.board[row - 2][column - 1].color != color))) {
+      board.board[row - 2][column - 1].showMarker = true;
+    }
+
+    if (withinBounds(row - 1, column - 2) &&
+        (board.board[row - 1][column - 2] is NoPiece ||
+            (board.board[row - 1][column - 2] is! NoPiece &&
+                board.board[row - 1][column - 2].color != color))) {
+      board.board[row - 1][column - 2].showMarker = true;
+    }
+
+    if (withinBounds(row + 1, column - 2) &&
+        (board.board[row + 1][column - 2] is NoPiece ||
+            (board.board[row + 1][column - 2] is! NoPiece &&
+                board.board[row + 1][column - 2].color != color))) {
+      board.board[row + 1][column - 2].showMarker = true;
+    }
+  }
 
   // @override
   // void destroyPiece(Board board) {}
