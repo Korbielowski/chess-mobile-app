@@ -339,10 +339,123 @@ class Queen extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {}
+  void showPossibleMoves(Board board) {
+    for (int tRow = row + 1; withinBounds(tRow, column); tRow++) {
+      if (board.board[tRow][column] is NoPiece) {
+        board.board[tRow][column].showMarker = true;
+      } else if (board.board[tRow][column] is! NoPiece &&
+          board.board[tRow][column].color != color) {
+        board.board[tRow][column].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+    }
 
-  @override
-  void updateMe(int destinationRow, int destinationColumn) {}
+    for (int tRow = row - 1; withinBounds(tRow, column); tRow--) {
+      if (board.board[tRow][column] is NoPiece) {
+        board.board[tRow][column].showMarker = true;
+      } else if (board.board[tRow][column] is! NoPiece &&
+          board.board[tRow][column].color != color) {
+        board.board[tRow][column].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+    }
+
+    for (int tColumn = column + 1; withinBounds(row, tColumn); tColumn++) {
+      if (board.board[row][tColumn] is NoPiece) {
+        board.board[row][tColumn].showMarker = true;
+      } else if (board.board[row][tColumn] is! NoPiece &&
+          board.board[row][tColumn].color != color) {
+        board.board[row][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+    }
+
+    for (int tColumn = column - 1; withinBounds(row, tColumn); tColumn--) {
+      if (board.board[row][tColumn] is NoPiece) {
+        board.board[row][tColumn].showMarker = true;
+      } else if (board.board[row][tColumn] is! NoPiece &&
+          board.board[row][tColumn].color != color) {
+        board.board[row][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+    }
+
+    int tColumn = column + 1;
+    int tRow = row + 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow++;
+      tColumn++;
+    }
+
+    tRow = row + 1;
+    tColumn = column - 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow++;
+      tColumn--;
+    }
+
+    tRow = row - 1;
+    tColumn = column + 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow--;
+      tColumn++;
+    }
+
+    tRow = row - 1;
+    tColumn = column - 1;
+
+    while (withinBounds(tRow, tColumn)) {
+      if (board.board[tRow][tColumn] is NoPiece) {
+        board.board[tRow][tColumn].showMarker = true;
+      } else if (board.board[tRow][tColumn] is! NoPiece &&
+          board.board[tRow][tColumn].color != color) {
+        board.board[tRow][tColumn].showMarker = true;
+        break;
+      } else {
+        break;
+      }
+      tRow--;
+      tColumn--;
+    }
+  }
 
   // @override
   // void destroyPiece(Board board) {}
