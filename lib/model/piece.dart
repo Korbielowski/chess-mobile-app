@@ -471,10 +471,68 @@ class King extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {}
+  void showPossibleMoves(Board board) {
+    if (withinBounds(row + 1, column) &&
+        (board.board[row + 1][column] is NoPiece ||
+            (board.board[row + 1][column] is! NoPiece &&
+                board.board[row + 1][column].color != color))) {
+      board.board[row + 1][column].showMarker = true;
+    }
 
-  @override
-  void updateMe(int destinationRow, int destinationColumn) {}
+    if (withinBounds(row + 1, column + 1) &&
+        (board.board[row + 1][column + 1] is NoPiece ||
+            (board.board[row + 1][column + 1] is! NoPiece &&
+                board.board[row + 1][column + 1].color != color))) {
+      board.board[row + 1][column + 1].showMarker = true;
+    }
+
+    if (withinBounds(row + 1, column - 1) &&
+        (board.board[row + 1][column - 1] is NoPiece ||
+            (board.board[row + 1][column - 1] is! NoPiece &&
+                board.board[row + 1][column - 1].color != color))) {
+      board.board[row + 1][column - 1].showMarker = true;
+    }
+
+    if (withinBounds(row, column + 1) &&
+        (board.board[row][column + 1] is NoPiece ||
+            (board.board[row][column + 1] is! NoPiece &&
+                board.board[row][column + 1].color != color))) {
+      board.board[row][column + 1].showMarker = true;
+    }
+
+    if (withinBounds(row, column - 1) &&
+        (board.board[row][column - 1] is NoPiece ||
+            (board.board[row][column - 1] is! NoPiece &&
+                board.board[row][column - 1].color != color))) {
+      board.board[row][column - 1].showMarker = true;
+    }
+
+    if (withinBounds(row - 1, column) &&
+        (board.board[row - 1][column] is NoPiece ||
+            (board.board[row - 1][column] is! NoPiece &&
+                board.board[row - 1][column].color != color))) {
+      board.board[row - 1][column].showMarker = true;
+    }
+
+    if (withinBounds(row - 1, column - 1) &&
+        (board.board[row - 1][column - 1] is NoPiece ||
+            (board.board[row - 1][column - 1] is! NoPiece &&
+                board.board[row - 1][column - 1].color != color))) {
+      board.board[row - 1][column - 1].showMarker = true;
+    }
+
+    if (withinBounds(row - 1, column + 1) &&
+        (board.board[row - 1][column + 1] is NoPiece ||
+            (board.board[row - 1][column + 1] is! NoPiece &&
+                board.board[row - 1][column + 1].color != color))) {
+      board.board[row - 1][column + 1].showMarker = true;
+    }
+  }
+
+  // @override
+  // void updateMe(int destinationRow, int destinationColumn) {
+  //   super.updateMe(destinationRow, destinationColumn);
+  // }
 
   // @override
   // void destroyPiece(Board board) {}
