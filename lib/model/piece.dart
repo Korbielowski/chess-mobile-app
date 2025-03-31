@@ -85,6 +85,7 @@ class Pawn extends Piece {
     // Attack right
     if (column + 1 <= 7 &&
         board.board[row + upDown][column + 1] is! NoPiece &&
+        !isKing(board.board[row + 2 * upDown][column]) &&
         board.board[row + upDown][column + 1].color != color) {
       board.board[row + upDown][column + 1].showMarker = true;
     }
@@ -92,6 +93,7 @@ class Pawn extends Piece {
     // Attack left
     if (column - 1 >= 0 &&
         board.board[row + upDown][column - 1] is! NoPiece &&
+        !isKing(board.board[row + 2 * upDown][column]) &&
         board.board[row + upDown][column - 1].color != color) {
       board.board[row + upDown][column - 1].showMarker = true;
     }
@@ -540,6 +542,13 @@ class King extends Piece {
 
 bool withinBounds(int row, int column) {
   if ((row >= 0 && row <= 7) && (column >= 0 && column <= 7)) {
+    return true;
+  }
+  return false;
+}
+
+bool isKing(Piece piece) {
+  if (piece is King) {
     return true;
   }
   return false;
