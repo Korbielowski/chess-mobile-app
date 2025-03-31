@@ -85,6 +85,7 @@ class Pawn extends Piece {
     // Attack right
     if (column + 1 <= 7 &&
         board.board[row + upDown][column + 1] is! NoPiece &&
+        !isKing(board.board[row + upDown][column + 1]) &&
         board.board[row + upDown][column + 1].color != color) {
       board.board[row + upDown][column + 1].showMarker = true;
     }
@@ -92,6 +93,7 @@ class Pawn extends Piece {
     // Attack left
     if (column - 1 >= 0 &&
         board.board[row + upDown][column - 1] is! NoPiece &&
+        !isKing(board.board[row + upDown][column - 1]) &&
         board.board[row + upDown][column - 1].color != color) {
       board.board[row + upDown][column - 1].showMarker = true;
     }
@@ -123,6 +125,7 @@ class Knight extends Piece {
     if (withinBounds(row + 2, column + 1) &&
         (board.board[row + 2][column + 1] is NoPiece ||
             (board.board[row + 2][column + 1] is! NoPiece &&
+                !isKing(board.board[row + 2][column + 1]) &&
                 board.board[row + 2][column + 1].color != color))) {
       board.board[row + 2][column + 1].showMarker = true;
     }
@@ -130,6 +133,7 @@ class Knight extends Piece {
     if (withinBounds(row + 2, column - 1) &&
         (board.board[row + 2][column - 1] is NoPiece ||
             (board.board[row + 2][column - 1] is! NoPiece &&
+                !isKing(board.board[row + 2][column - 1]) &&
                 board.board[row + 2][column - 1].color != color))) {
       board.board[row + 2][column - 1].showMarker = true;
     }
@@ -137,6 +141,7 @@ class Knight extends Piece {
     if (withinBounds(row + 1, column + 2) &&
         (board.board[row + 1][column + 2] is NoPiece ||
             (board.board[row + 1][column + 2] is! NoPiece &&
+                !isKing(board.board[row + 1][column + 2]) &&
                 board.board[row + 1][column + 2].color != color))) {
       board.board[row + 1][column + 2].showMarker = true;
     }
@@ -144,6 +149,7 @@ class Knight extends Piece {
     if (withinBounds(row - 1, column + 2) &&
         (board.board[row - 1][column + 2] is NoPiece ||
             (board.board[row - 1][column + 2] is! NoPiece &&
+                !isKing(board.board[row - 1][column + 2]) &&
                 board.board[row - 1][column + 2].color != color))) {
       board.board[row - 1][column + 2].showMarker = true;
     }
@@ -151,6 +157,7 @@ class Knight extends Piece {
     if (withinBounds(row - 2, column + 1) &&
         (board.board[row - 2][column + 1] is NoPiece ||
             (board.board[row - 2][column + 1] is! NoPiece &&
+                !isKing(board.board[row - 2][column + 1]) &&
                 board.board[row - 2][column + 1].color != color))) {
       board.board[row - 2][column + 1].showMarker = true;
     }
@@ -158,6 +165,7 @@ class Knight extends Piece {
     if (withinBounds(row - 2, column - 1) &&
         (board.board[row - 2][column - 1] is NoPiece ||
             (board.board[row - 2][column - 1] is! NoPiece &&
+                !isKing(board.board[row - 2][column - 1]) &&
                 board.board[row - 2][column - 1].color != color))) {
       board.board[row - 2][column - 1].showMarker = true;
     }
@@ -165,6 +173,7 @@ class Knight extends Piece {
     if (withinBounds(row - 1, column - 2) &&
         (board.board[row - 1][column - 2] is NoPiece ||
             (board.board[row - 1][column - 2] is! NoPiece &&
+                !isKing(board.board[row - 1][column - 2]) &&
                 board.board[row - 1][column - 2].color != color))) {
       board.board[row - 1][column - 2].showMarker = true;
     }
@@ -172,6 +181,7 @@ class Knight extends Piece {
     if (withinBounds(row + 1, column - 2) &&
         (board.board[row + 1][column - 2] is NoPiece ||
             (board.board[row + 1][column - 2] is! NoPiece &&
+                !isKing(board.board[row + 1][column - 2]) &&
                 board.board[row + 1][column - 2].color != color))) {
       board.board[row + 1][column - 2].showMarker = true;
     }
@@ -199,6 +209,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -216,6 +227,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -233,6 +245,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -250,6 +263,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -280,6 +294,7 @@ class Rook extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -292,6 +307,7 @@ class Rook extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -304,6 +320,7 @@ class Rook extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -316,6 +333,7 @@ class Rook extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -344,6 +362,7 @@ class Queen extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -356,6 +375,7 @@ class Queen extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -368,6 +388,7 @@ class Queen extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -380,6 +401,7 @@ class Queen extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -395,6 +417,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -412,6 +435,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -429,6 +453,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -446,6 +471,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -540,6 +566,13 @@ class King extends Piece {
 
 bool withinBounds(int row, int column) {
   if ((row >= 0 && row <= 7) && (column >= 0 && column <= 7)) {
+    return true;
+  }
+  return false;
+}
+
+bool isKing(Piece piece) {
+  if (piece is King) {
     return true;
   }
   return false;
