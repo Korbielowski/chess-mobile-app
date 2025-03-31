@@ -209,6 +209,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -226,6 +227,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -243,6 +245,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -260,6 +263,7 @@ class Bishop extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
