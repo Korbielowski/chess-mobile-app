@@ -362,6 +362,7 @@ class Queen extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -374,6 +375,7 @@ class Queen extends Piece {
       if (board.board[tRow][column] is NoPiece) {
         board.board[tRow][column].showMarker = true;
       } else if (board.board[tRow][column] is! NoPiece &&
+          !isKing(board.board[tRow][column]) &&
           board.board[tRow][column].color != color) {
         board.board[tRow][column].showMarker = true;
         break;
@@ -386,6 +388,7 @@ class Queen extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -398,6 +401,7 @@ class Queen extends Piece {
       if (board.board[row][tColumn] is NoPiece) {
         board.board[row][tColumn].showMarker = true;
       } else if (board.board[row][tColumn] is! NoPiece &&
+          !isKing(board.board[row][tColumn]) &&
           board.board[row][tColumn].color != color) {
         board.board[row][tColumn].showMarker = true;
         break;
@@ -413,6 +417,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -430,6 +435,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -447,6 +453,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
@@ -464,6 +471,7 @@ class Queen extends Piece {
       if (board.board[tRow][tColumn] is NoPiece) {
         board.board[tRow][tColumn].showMarker = true;
       } else if (board.board[tRow][tColumn] is! NoPiece &&
+          !isKing(board.board[tRow][tColumn]) &&
           board.board[tRow][tColumn].color != color) {
         board.board[tRow][tColumn].showMarker = true;
         break;
