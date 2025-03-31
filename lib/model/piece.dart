@@ -85,7 +85,7 @@ class Pawn extends Piece {
     // Attack right
     if (column + 1 <= 7 &&
         board.board[row + upDown][column + 1] is! NoPiece &&
-        !isKing(board.board[row + 2 * upDown][column]) &&
+        !isKing(board.board[row + upDown][column + 1]) &&
         board.board[row + upDown][column + 1].color != color) {
       board.board[row + upDown][column + 1].showMarker = true;
     }
@@ -93,7 +93,7 @@ class Pawn extends Piece {
     // Attack left
     if (column - 1 >= 0 &&
         board.board[row + upDown][column - 1] is! NoPiece &&
-        !isKing(board.board[row + 2 * upDown][column]) &&
+        !isKing(board.board[row + upDown][column - 1]) &&
         board.board[row + upDown][column - 1].color != color) {
       board.board[row + upDown][column - 1].showMarker = true;
     }
@@ -125,6 +125,7 @@ class Knight extends Piece {
     if (withinBounds(row + 2, column + 1) &&
         (board.board[row + 2][column + 1] is NoPiece ||
             (board.board[row + 2][column + 1] is! NoPiece &&
+                !isKing(board.board[row + 2][column + 1]) &&
                 board.board[row + 2][column + 1].color != color))) {
       board.board[row + 2][column + 1].showMarker = true;
     }
@@ -132,6 +133,7 @@ class Knight extends Piece {
     if (withinBounds(row + 2, column - 1) &&
         (board.board[row + 2][column - 1] is NoPiece ||
             (board.board[row + 2][column - 1] is! NoPiece &&
+                !isKing(board.board[row + 2][column - 1]) &&
                 board.board[row + 2][column - 1].color != color))) {
       board.board[row + 2][column - 1].showMarker = true;
     }
@@ -139,6 +141,7 @@ class Knight extends Piece {
     if (withinBounds(row + 1, column + 2) &&
         (board.board[row + 1][column + 2] is NoPiece ||
             (board.board[row + 1][column + 2] is! NoPiece &&
+                !isKing(board.board[row + 1][column + 2]) &&
                 board.board[row + 1][column + 2].color != color))) {
       board.board[row + 1][column + 2].showMarker = true;
     }
@@ -146,6 +149,7 @@ class Knight extends Piece {
     if (withinBounds(row - 1, column + 2) &&
         (board.board[row - 1][column + 2] is NoPiece ||
             (board.board[row - 1][column + 2] is! NoPiece &&
+                !isKing(board.board[row - 1][column + 2]) &&
                 board.board[row - 1][column + 2].color != color))) {
       board.board[row - 1][column + 2].showMarker = true;
     }
@@ -153,6 +157,7 @@ class Knight extends Piece {
     if (withinBounds(row - 2, column + 1) &&
         (board.board[row - 2][column + 1] is NoPiece ||
             (board.board[row - 2][column + 1] is! NoPiece &&
+                !isKing(board.board[row - 2][column + 1]) &&
                 board.board[row - 2][column + 1].color != color))) {
       board.board[row - 2][column + 1].showMarker = true;
     }
@@ -160,6 +165,7 @@ class Knight extends Piece {
     if (withinBounds(row - 2, column - 1) &&
         (board.board[row - 2][column - 1] is NoPiece ||
             (board.board[row - 2][column - 1] is! NoPiece &&
+                !isKing(board.board[row - 2][column - 1]) &&
                 board.board[row - 2][column - 1].color != color))) {
       board.board[row - 2][column - 1].showMarker = true;
     }
@@ -167,6 +173,7 @@ class Knight extends Piece {
     if (withinBounds(row - 1, column - 2) &&
         (board.board[row - 1][column - 2] is NoPiece ||
             (board.board[row - 1][column - 2] is! NoPiece &&
+                !isKing(board.board[row - 1][column - 2]) &&
                 board.board[row - 1][column - 2].color != color))) {
       board.board[row - 1][column - 2].showMarker = true;
     }
@@ -174,6 +181,7 @@ class Knight extends Piece {
     if (withinBounds(row + 1, column - 2) &&
         (board.board[row + 1][column - 2] is NoPiece ||
             (board.board[row + 1][column - 2] is! NoPiece &&
+                !isKing(board.board[row + 1][column - 2]) &&
                 board.board[row + 1][column - 2].color != color))) {
       board.board[row + 1][column - 2].showMarker = true;
     }
