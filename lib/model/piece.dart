@@ -73,7 +73,9 @@ class Pawn extends Piece {
     int upDown = (color == PieceColor.white) ? -1 : 1;
 
     // First move, able to move by two rows
-    if (isFirstMove && board.board[row + 2 * upDown][column] is NoPiece) {
+    if (isFirstMove &&
+        board.board[row + upDown][column] is NoPiece &&
+        board.board[row + 2 * upDown][column] is NoPiece) {
       board.board[row + 2 * upDown][column].showMarker = true;
     }
 
@@ -498,63 +500,34 @@ class King extends Piece {
 
   @override
   void showPossibleMoves(Board board) {
-    if (withinBounds(row + 1, column) &&
-        (board.board[row + 1][column] is NoPiece ||
-            (board.board[row + 1][column] is! NoPiece &&
-                board.board[row + 1][column].color != color))) {
-      board.board[row + 1][column].showMarker = true;
-    }
-
-    if (withinBounds(row + 1, column + 1) &&
-        (board.board[row + 1][column + 1] is NoPiece ||
-            (board.board[row + 1][column + 1] is! NoPiece &&
-                board.board[row + 1][column + 1].color != color))) {
-      board.board[row + 1][column + 1].showMarker = true;
-    }
-
-    if (withinBounds(row + 1, column - 1) &&
-        (board.board[row + 1][column - 1] is NoPiece ||
-            (board.board[row + 1][column - 1] is! NoPiece &&
-                board.board[row + 1][column - 1].color != color))) {
-      board.board[row + 1][column - 1].showMarker = true;
-    }
-
-    if (withinBounds(row, column + 1) &&
-        (board.board[row][column + 1] is NoPiece ||
-            (board.board[row][column + 1] is! NoPiece &&
-                board.board[row][column + 1].color != color))) {
-      board.board[row][column + 1].showMarker = true;
-    }
-
-    if (withinBounds(row, column - 1) &&
-        (board.board[row][column - 1] is NoPiece ||
-            (board.board[row][column - 1] is! NoPiece &&
-                board.board[row][column - 1].color != color))) {
-      board.board[row][column - 1].showMarker = true;
-    }
-
-    if (withinBounds(row - 1, column) &&
-        (board.board[row - 1][column] is NoPiece ||
-            (board.board[row - 1][column] is! NoPiece &&
-                board.board[row - 1][column].color != color))) {
-      board.board[row - 1][column].showMarker = true;
-    }
-
-    if (withinBounds(row - 1, column - 1) &&
-        (board.board[row - 1][column - 1] is NoPiece ||
-            (board.board[row - 1][column - 1] is! NoPiece &&
-                board.board[row - 1][column - 1].color != color))) {
-      board.board[row - 1][column - 1].showMarker = true;
-    }
-
-    if (withinBounds(row - 1, column + 1) &&
-        (board.board[row - 1][column + 1] is NoPiece ||
-            (board.board[row - 1][column + 1] is! NoPiece &&
-                board.board[row - 1][column + 1].color != color))) {
-      board.board[row - 1][column + 1].showMarker = true;
+    for (int tRow = -1; tRow <= 1; tRow++) {
+      for (int tColumn = -1; tColumn <= 1; tColumn++) {
+        if (withinBounds(row + tRow, column + tColumn) &&
+            (board.board[row + tRow][column + tColumn] is NoPiece ||
+                (board.board[row + tRow][column + tColumn] is! NoPiece &&
+                    board.board[row + tRow][column + tColumn].color !=
+                        color)) &&
+            !isKingAround(row + tRow, column + tColumn, board)) {
+          board.board[row + tRow][column + tColumn].showMarker = true;
+        }
+      }
     }
   }
 
+  // Naive approach, probably there is a better way to do this
+  bool isKingAround(int rowToCheck, int columnToCheck, Board board) {
+    for (int tRow = -1; tRow <= 1; tRow++) {
+      for (int tColumn = -1; tColumn <= 1; tColumn++) {
+        if (withinBounds(rowToCheck + tRow, columnToCheck + tColumn) &&
+            board.board[rowToCheck + tRow][columnToCheck + tColumn] is King &&
+            board.board[rowToCheck + tRow][columnToCheck + tColumn].color !=
+                color) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   // @override
   // void updateMe(int destinationRow, int destinationColumn) {
   //   super.updateMe(destinationRow, destinationColumn);
