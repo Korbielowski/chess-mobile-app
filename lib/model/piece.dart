@@ -506,13 +506,28 @@ class King extends Piece {
             (board.board[row + tRow][column + tColumn] is NoPiece ||
                 (board.board[row + tRow][column + tColumn] is! NoPiece &&
                     board.board[row + tRow][column + tColumn].color !=
-                        color))) {
+                        color)) &&
+            !isKingAround(row + tRow, column + tColumn, board)) {
           board.board[row + tRow][column + tColumn].showMarker = true;
         }
       }
     }
   }
 
+  // Naive approach, probably there is a better way to do this
+  bool isKingAround(int rowToCheck, int columnToCheck, Board board) {
+    for (int tRow = -1; tRow <= 1; tRow++) {
+      for (int tColumn = -1; tColumn <= 1; tColumn++) {
+        if (withinBounds(rowToCheck + tRow, columnToCheck + tColumn) &&
+            board.board[rowToCheck + tRow][columnToCheck + tColumn] is King &&
+            board.board[rowToCheck + tRow][columnToCheck + tColumn].color !=
+                color) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   // @override
   // void updateMe(int destinationRow, int destinationColumn) {
   //   super.updateMe(destinationRow, destinationColumn);
