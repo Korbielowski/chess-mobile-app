@@ -23,6 +23,22 @@ abstract class Piece {
       piece.column,
       PieceColor.noColor,
     );
+    if (piece is Pawn) {
+      print(board[destinationRow - piece.upDown][destinationColumn] is Pawn);
+      if (board[destinationRow - piece.upDown][destinationColumn] is Pawn &&
+          board[destinationRow - piece.upDown][destinationColumn].color !=
+              piece.color) {
+        Pawn attackedPawn =
+            board[destinationRow - piece.upDown][destinationColumn] as Pawn;
+        if (attackedPawn.isEnPassant) {
+          board[destinationRow - piece.upDown][destinationColumn] = NoPiece(
+            destinationRow - piece.upDown,
+            destinationColumn,
+            PieceColor.noColor,
+          );
+        }
+      }
+    }
     if (board[destinationRow][destinationColumn] is! NoPiece) {
       board[destinationRow][destinationColumn] = NoPiece(
         destinationRow,
@@ -58,6 +74,7 @@ class NoPiece extends Piece {
 class Pawn extends Piece {
   bool isFirstMove = true;
   bool isEnPassant = false;
+  late int upDown;
 
   Pawn(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
@@ -65,12 +82,12 @@ class Pawn extends Piece {
     } else {
       image = Image.asset("assets/pieces/black_pawn.png");
     }
+    upDown = (color == PieceColor.white) ? -1 : 1;
   }
 
   @override
   void showPossibleMoves(Board board) {
     // Determine whether to move up or down, determined by color of a piece
-    int upDown = (color == PieceColor.white) ? -1 : 1;
 
     // First move, able to move by two rows
     if (isFirstMove &&
@@ -99,14 +116,35 @@ class Pawn extends Piece {
         board.board[row + upDown][column - 1].color != color) {
       board.board[row + upDown][column - 1].showMarker = true;
     }
+
+    // En Passant right
+    if (withinBounds(row, column - 1) && board.board[row][column - 1] is Pawn) {
+      Pawn tmpPawn = board.board[row][column - 1] as Pawn;
+      if (tmpPawn.isEnPassant && tmpPawn.color != color) {
+        board.board[row + upDown][column - 1].showMarker = true;
+      }
+    }
+
+    // En Passant left
+    if (withinBounds(row, column + 1) && board.board[row][column + 1] is Pawn) {
+      Pawn tmpPawn = board.board[row][column + 1] as Pawn;
+      if (tmpPawn.isEnPassant && tmpPawn.color != color) {
+        board.board[row + upDown][column + 1].showMarker = true;
+      }
+    }
   }
 
   @override
   updateMe(destinationRow, destinationColumn) {
-    super.updateMe(destinationRow, destinationColumn);
     if (isFirstMove == true) {
       isFirstMove = false;
+      if ((destinationRow - row).abs() == 2) {
+        isEnPassant = true;
+      }
+    } else {
+      isEnPassant = false;
     }
+    super.updateMe(destinationRow, destinationColumn);
   }
 
   // @override
