@@ -11,7 +11,13 @@ This is a project for univeristy classes called Grand Chess. It's an app for pla
 
 2. Second Mile Stones
 
- - [ ] More advanced moves like en passant and castling
+ - [ ] More advanced moves
+    - [X] En Passant
+    - [ ] Castling
+    - [ ] Pawn promotion
+    - [ ] Check
+    - [ ] Checkmate
+    - [ ] Stalemate
  - [ ] Ability to change looks of the chess board and pieces
 
 3. Third Mile Stone
