@@ -24,7 +24,6 @@ abstract class Piece {
       PieceColor.noColor,
     );
     if (piece is Pawn) {
-      print(board[destinationRow - piece.upDown][destinationColumn] is Pawn);
       if (board[destinationRow - piece.upDown][destinationColumn] is Pawn &&
           board[destinationRow - piece.upDown][destinationColumn].color !=
               piece.color) {
@@ -97,12 +96,13 @@ class Pawn extends Piece {
     }
 
     // Normal move by one row
-    if (row + upDown >= 0 && board.board[row + upDown][column] is NoPiece) {
+    if (withinBounds(row + upDown, column) &&
+        board.board[row + upDown][column] is NoPiece) {
       board.board[row + upDown][column].showMarker = true;
     }
 
     // Attack right
-    if (column + 1 <= 7 &&
+    if (withinBounds(row + upDown, column + 1) &&
         board.board[row + upDown][column + 1] is! NoPiece &&
         !isKing(board.board[row + upDown][column + 1]) &&
         board.board[row + upDown][column + 1].color != color) {
@@ -110,7 +110,7 @@ class Pawn extends Piece {
     }
 
     // Attack left
-    if (column - 1 >= 0 &&
+    if (withinBounds(row + upDown, column - 1) &&
         board.board[row + upDown][column - 1] is! NoPiece &&
         !isKing(board.board[row + upDown][column - 1]) &&
         board.board[row + upDown][column - 1].color != color) {
