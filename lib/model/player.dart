@@ -1,8 +1,11 @@
 import 'package:chess/model/piece.dart';
 
 class Player {
-  late int time;
   PieceColor color;
+  late int maxTime;
+  Stopwatch timer = Stopwatch();
 
-  Player(this.time, this.color);
+  Player(time, this.color) {
+    maxTime = time * 60;
+  }
 }
