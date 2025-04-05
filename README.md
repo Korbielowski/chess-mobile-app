@@ -13,7 +13,7 @@ This is a project for univeristy classes called Grand Chess. It's an app for pla
 
  - [ ] More advanced moves
     - [X] En Passant
-    - [ ] Castling
+    - [X] Castling
     - [ ] Pawn promotion
     - [ ] Check
     - [ ] Checkmate
