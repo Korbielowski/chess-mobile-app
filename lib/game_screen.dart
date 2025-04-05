@@ -1,4 +1,4 @@
-import 'package:chess/model/board.dart';
+import 'package:chess/model/game.dart';
 import 'package:chess/model/piece.dart';
 import 'package:chess/riverpod.dart';
 import 'package:chess/widgets/circle_widget.dart';
@@ -10,7 +10,7 @@ class GameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final board = ref.watch(boardProvider);
+    final game = ref.watch(gameProvider);
     return Scaffold(
       body: Container(
         alignment: Alignment.bottomCenter,
@@ -19,7 +19,7 @@ class GameScreen extends ConsumerWidget {
             crossAxisCount: 8,
           ),
           itemBuilder: (context, index) {
-            return _getBoard(context, index, board);
+            return _getBoard(context, index, game);
           },
           itemCount: 8 * 8,
         ),
@@ -27,12 +27,12 @@ class GameScreen extends ConsumerWidget {
     );
   }
 
-  Widget _getBoard(BuildContext context, int index, Board board) {
+  Widget _getBoard(BuildContext context, int index, Game game) {
     int row, column = 0;
     row = (index / 8).floor();
     column = (index % 8);
     return GestureDetector(
-      onTap: () => board.tileClicked(context, row, column),
+      onTap: () => game.tileClicked(context, row, column),
       child: GridTile(
         child: Stack(
           alignment: Alignment.center,
@@ -43,8 +43,8 @@ class GameScreen extends ConsumerWidget {
                 // border: Border.all(color: Colors.black, width: 0.5),
               ),
               child:
-                  (board.board[row][column] is! NoPiece)
-                      ? Center(child: board.board[row][column].image)
+                  (game.board.board[row][column] is! NoPiece)
+                      ? Center(child: game.board.board[row][column].image)
                       : null,
             ),
             CircleWidget(row, column),

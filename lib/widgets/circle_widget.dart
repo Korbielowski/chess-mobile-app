@@ -9,9 +9,10 @@ class CircleWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final board = ref.watch(boardProvider);
+    final game = ref.watch(gameProvider);
     return Offstage(
-      offstage: (board.board[row][column].showMarker == true) ? false : true,
+      offstage:
+          (game.board.board[row][column].showMarker == true) ? false : true,
       child: Opacity(
         opacity: 0.35,
         child: Container(
