@@ -12,21 +12,27 @@ class Game extends ChangeNotifier {
   late Player currentPlayer;
   Game() {
     currentPlayer = players[0];
-    currentPlayer.timer.start();
+    // TODO: Work on time feature in third mile stone, when other things are done
+    // currentPlayer.timer.start();
+  }
+
+  void tileClicked(BuildContext context, int row, int column) {
+    board.tileClicked(this, row, column);
+    notifyListeners();
   }
 
   void switchPlayer() {
-    currentPlayer.timer.stop();
+    // currentPlayer.timer.stop();
     if (currentPlayer.color == PieceColor.white) {
       currentPlayer = players[1];
     } else {
       currentPlayer = players[0];
     }
-    currentPlayer.timer.start();
+    // currentPlayer.timer.start();
   }
 
   void endGame() {
-    players[0].timer.stop();
-    players[1].timer.stop();
+    // players[0].timer.stop();
+    // players[1].timer.stop();
   }
 }

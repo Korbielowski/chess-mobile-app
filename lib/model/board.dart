@@ -1,7 +1,7 @@
+import 'package:chess/model/game.dart';
 import 'package:chess/model/piece.dart';
-import 'package:flutter/material.dart';
 
-class Board extends ChangeNotifier {
+class Board {
   late List<List<Piece>> board;
   late Piece selectedPiece;
 
@@ -64,8 +64,12 @@ class Board extends ChangeNotifier {
     }
   }
 
-  void tileClicked(BuildContext context, int row, int column) {
+  void tileClicked(Game game, int row, int column) {
     Piece piece = board[row][column];
+    if (piece.showMarker == false && game.currentPlayer.color != piece.color) {
+      zeroPossibleMoves();
+      return;
+    }
 
     if (piece is! NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
@@ -74,18 +78,13 @@ class Board extends ChangeNotifier {
     } else if (piece is! NoPiece && piece.showMarker == true) {
       piece.movePiece(board, selectedPiece, row, column);
       zeroPossibleMoves();
+      game.switchPlayer();
     } else if (piece is NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == true) {
       piece.movePiece(board, selectedPiece, row, column);
       zeroPossibleMoves();
+      game.switchPlayer();
     }
-    notifyListeners();
   }
 }
-
-  // class Tile {
-  //   late Piece piece;
-
-  //   Tile(this.piece);
-  // }
