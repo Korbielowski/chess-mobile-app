@@ -10,16 +10,19 @@ class GameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final tileSize = MediaQuery.of(context).size.width / 8;
     final game = ref.watch(gameProvider);
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.bottomCenter,
+    return Center(
+      child: SizedBox(
+        height: tileSize * 9,
+        width: MediaQuery.of(context).size.width,
         child: GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 8,
           ),
           itemBuilder: (context, index) {
-            return _getBoard(context, index, game);
+            return _getBoard(context, index, tileSize, game);
           },
           itemCount: 8 * 8,
         ),
@@ -27,7 +30,12 @@ class GameScreen extends ConsumerWidget {
     );
   }
 
-  Widget _getBoard(BuildContext context, int index, Game game) {
+  Widget _getBoard(
+    BuildContext context,
+    int index,
+    double tileSize,
+    Game game,
+  ) {
     int row, column = 0;
     row = (index / 8).floor();
     column = (index % 8);
@@ -38,6 +46,8 @@ class GameScreen extends ConsumerWidget {
           alignment: Alignment.center,
           children: [
             Container(
+              width: tileSize,
+              height: tileSize,
               decoration: BoxDecoration(
                 color: ((row + column) % 2 != 0) ? Colors.brown : Colors.white,
                 // border: Border.all(color: Colors.black, width: 0.5),
