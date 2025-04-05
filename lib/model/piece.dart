@@ -37,6 +37,31 @@ abstract class Piece {
           );
         }
       }
+    } else if (piece is King &&
+        board[destinationRow][destinationColumn] is Rook) {
+      Piece tmpPiece = board[destinationRow][destinationColumn];
+      board[piece.row][piece.column] = NoPiece(
+        piece.row,
+        piece.column,
+        PieceColor.noColor,
+      );
+      if (tmpPiece.column == 0) {
+        board[piece.row][piece.column - 2] = piece;
+        board[piece.row][piece.column - 1] = tmpPiece;
+        tmpPiece.updateMe(piece.row, piece.column - 1);
+        piece.updateMe(piece.row, piece.column - 2);
+      } else {
+        board[piece.row][piece.column + 2] = piece;
+        board[piece.row][piece.column + 1] = tmpPiece;
+        tmpPiece.updateMe(piece.row, piece.column + 1);
+        piece.updateMe(piece.row, piece.column + 2);
+      }
+      board[destinationRow][destinationColumn] = NoPiece(
+        destinationRow,
+        destinationColumn,
+        PieceColor.noColor,
+      );
+      return;
     }
     if (board[destinationRow][destinationColumn] is! NoPiece) {
       board[destinationRow][destinationColumn] = NoPiece(
@@ -528,6 +553,7 @@ class Queen extends Piece {
 }
 
 class King extends Piece {
+  bool isCastling = true;
   King(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
       image = Image.asset("assets/pieces/white_king.png");
@@ -550,6 +576,27 @@ class King extends Piece {
         }
       }
     }
+
+    if (isCastling == true) {
+      for (int tColumn = column + 1; tColumn <= 7; tColumn++) {
+        if (board.board[row][tColumn] is! NoPiece && tColumn < 7) {
+          break;
+        }
+        if (board.board[row][tColumn] is Rook &&
+            board.board[row][tColumn].color == color) {
+          board.board[row][tColumn].showMarker = true;
+        }
+      }
+      for (int tColumn = column - 1; tColumn >= 0; tColumn--) {
+        if (board.board[row][tColumn] is! NoPiece && tColumn > 0) {
+          break;
+        }
+        if (board.board[row][tColumn] is Rook &&
+            board.board[row][tColumn].color == color) {
+          board.board[row][tColumn].showMarker = true;
+        }
+      }
+    }
   }
 
   // Naive approach, probably there is a better way to do this
@@ -566,10 +613,12 @@ class King extends Piece {
     }
     return false;
   }
-  // @override
-  // void updateMe(int destinationRow, int destinationColumn) {
-  //   super.updateMe(destinationRow, destinationColumn);
-  // }
+
+  @override
+  void updateMe(int destinationRow, int destinationColumn) {
+    super.updateMe(destinationRow, destinationColumn);
+    isCastling = false;
+  }
 
   // @override
   // void destroyPiece(Board board) {}
