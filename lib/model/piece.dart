@@ -26,6 +26,7 @@ abstract class Piece {
       piece.column,
       PieceColor.noColor,
     );
+    bool isEnPassant = false;
     if (piece is Pawn) {
       if (board[destinationRow - piece.upDown][destinationColumn] is Pawn &&
           board[destinationRow - piece.upDown][destinationColumn].color !=
@@ -39,6 +40,7 @@ abstract class Piece {
             PieceColor.noColor,
           );
         }
+        isEnPassant = true;
       }
     } else if (piece is King &&
         board[destinationRow][destinationColumn] is Rook) {
@@ -67,7 +69,7 @@ abstract class Piece {
       playSound("sounds/castling_sound.wav");
       return;
     }
-    if (board[destinationRow][destinationColumn] is! NoPiece) {
+    if (board[destinationRow][destinationColumn] is! NoPiece || isEnPassant) {
       board[destinationRow][destinationColumn] = NoPiece(
         destinationRow,
         destinationColumn,
