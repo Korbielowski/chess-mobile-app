@@ -64,6 +64,7 @@ abstract class Piece {
         destinationColumn,
         PieceColor.noColor,
       );
+      playSound("sounds/castling_sound.wav");
       return;
     }
     if (board[destinationRow][destinationColumn] is! NoPiece) {
@@ -72,10 +73,12 @@ abstract class Piece {
         destinationColumn,
         PieceColor.noColor,
       );
+      playSound("sounds/capture_sound.wav");
+    } else {
+      playSound("sounds/move_sound.wav");
     }
     piece.updateMe(destinationRow, destinationColumn);
     board[destinationRow][destinationColumn] = piece;
-    playSound();
   }
 
   void updateMe(int destinationRow, int destinationColumn) {
@@ -642,7 +645,6 @@ bool isKing(Piece piece) {
   return false;
 }
 
-Future<void> playSound() async {
-  const path = "sounds/move_sound.wav";
+Future<void> playSound(String path) async {
   await player.play(AssetSource(path));
 }
