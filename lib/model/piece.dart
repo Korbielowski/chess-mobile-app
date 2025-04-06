@@ -1,7 +1,10 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:chess/model/board.dart';
 import 'package:flutter/cupertino.dart';
 
 enum PieceColor { black, white, noColor }
+
+final AudioPlayer player = AudioPlayer();
 
 abstract class Piece {
   late PieceColor color;
@@ -61,6 +64,7 @@ abstract class Piece {
         destinationColumn,
         PieceColor.noColor,
       );
+      playSound("sounds/castling_sound.wav");
       return;
     }
     if (board[destinationRow][destinationColumn] is! NoPiece) {
@@ -69,6 +73,9 @@ abstract class Piece {
         destinationColumn,
         PieceColor.noColor,
       );
+      playSound("sounds/capture_sound.wav");
+    } else {
+      playSound("sounds/move_sound.wav");
     }
     piece.updateMe(destinationRow, destinationColumn);
     board[destinationRow][destinationColumn] = piece;
@@ -636,4 +643,8 @@ bool isKing(Piece piece) {
     return true;
   }
   return false;
+}
+
+Future<void> playSound(String path) async {
+  await player.play(AssetSource(path));
 }
