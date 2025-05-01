@@ -41,7 +41,8 @@ abstract class Piece {
         }
       }
     } else if (piece is King &&
-        board[destinationRow][destinationColumn] is Rook) {
+        board[destinationRow][destinationColumn] is Rook &&
+        board[destinationRow][destinationColumn].color == piece.color) {
       Piece tmpPiece = board[destinationRow][destinationColumn];
       board[piece.row][piece.column] = NoPiece(
         piece.row,
