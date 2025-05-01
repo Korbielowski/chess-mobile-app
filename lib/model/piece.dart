@@ -40,6 +40,9 @@ abstract class Piece {
           );
         }
       }
+      if (destinationRow == 7 || destinationRow == 0) {
+        piece = Queen(destinationRow, destinationColumn, piece.color);
+      }
     } else if (piece is King &&
         board[destinationRow][destinationColumn] is Rook &&
         board[destinationRow][destinationColumn].color == piece.color) {
