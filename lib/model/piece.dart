@@ -120,7 +120,7 @@ class Pawn extends Piece {
 
   @override
   void showPossibleMoves(Board board) {
-    // Determine whether to move up or down, determined by color of a piece
+    // Determine whether to move up or down by looking at the color of a piece
 
     // First move, able to move by two rows
     if (isFirstMove &&
