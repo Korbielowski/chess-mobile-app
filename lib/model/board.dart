@@ -66,6 +66,15 @@ class Board {
 
   void tileClicked(Game game, int row, int column) {
     Piece piece = board[row][column];
+    print(
+      "row: $row, column: $column, Prow: ${game.promotionPawn?.row}, Pcolumn: ${game.promotionPawn?.column}",
+    );
+    if (game.promotionPawn != null &&
+        (piece.row != game.promotionPawn?.row ||
+            piece.column != game.promotionPawn?.column)) {
+      print("We are skipping");
+      return;
+    }
     if (piece.showMarker == false && game.currentPlayer.color != piece.color) {
       zeroPossibleMoves();
       return;
@@ -76,13 +85,13 @@ class Board {
       piece.showPossibleMoves(this);
       selectedPiece = piece;
     } else if (piece is! NoPiece && piece.showMarker == true) {
-      piece.movePiece(board, selectedPiece, row, column);
+      piece.movePiece(game, selectedPiece, row, column);
       zeroPossibleMoves();
       game.switchPlayer();
     } else if (piece is NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == true) {
-      piece.movePiece(board, selectedPiece, row, column);
+      piece.movePiece(game, selectedPiece, row, column);
       zeroPossibleMoves();
       game.switchPlayer();
     }
