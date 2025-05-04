@@ -2,7 +2,6 @@ import 'package:chess/model/game.dart';
 import 'package:chess/model/piece.dart';
 import 'package:chess/riverpod.dart';
 import 'package:chess/widgets/circle_widget.dart';
-import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
