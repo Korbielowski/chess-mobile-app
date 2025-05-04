@@ -10,6 +10,7 @@ class Game extends ChangeNotifier {
     Player(10, PieceColor.black),
   ];
   late Player currentPlayer;
+  Pawn? promotionPawn;
   Game() {
     currentPlayer = players[0];
     // TODO: Work on time feature in third mile stone, when other things are done
@@ -21,7 +22,17 @@ class Game extends ChangeNotifier {
     notifyListeners();
   }
 
+  void promotePawn(int toWhat) {
+    promotionPawn?.promoteMe(board.board, toWhat);
+    promotionPawn = null;
+    switchPlayer();
+    notifyListeners();
+  }
+
   void switchPlayer() {
+    if (promotionPawn != null) {
+      return;
+    }
     // currentPlayer.timer.stop();
     if (currentPlayer.color == PieceColor.white) {
       currentPlayer = players[1];

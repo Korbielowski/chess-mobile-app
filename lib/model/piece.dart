@@ -1,6 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chess/model/board.dart';
+import 'package:chess/model/game.dart';
+import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 enum PieceColor { black, white, noColor }
 
@@ -16,11 +19,12 @@ abstract class Piece {
   Piece(this.row, this.column, this.color);
   void showPossibleMoves(Board board);
   void movePiece(
-    List<List<Piece>> board,
+    Game game,
     Piece piece,
     int destinationRow,
     int destinationColumn,
   ) {
+    List<List<Piece>> board = game.board.board;
     board[piece.row][piece.column] = NoPiece(
       piece.row,
       piece.column,
@@ -39,6 +43,9 @@ abstract class Piece {
             PieceColor.noColor,
           );
         }
+      }
+      if (destinationRow == 7 || destinationRow == 0) {
+        game.promotionPawn = piece;
       }
     } else if (piece is King &&
         board[destinationRow][destinationColumn] is Rook &&
@@ -178,6 +185,18 @@ class Pawn extends Piece {
       isEnPassant = false;
     }
     super.updateMe(destinationRow, destinationColumn);
+  }
+
+  promoteMe(List<List<Piece>> board, int toWhat) {
+    if (toWhat == 1) {
+      board[row][column] = Queen(row, column, color);
+    } else if (toWhat == 2) {
+      board[row][column] = Rook(row, column, color);
+    } else if (toWhat == 3) {
+      board[row][column] = Bishop(row, column, color);
+    } else if (toWhat == 4) {
+      board[row][column] = Knight(row, column, color);
+    }
   }
 
   // @override
