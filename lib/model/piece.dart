@@ -116,9 +116,9 @@ class Pawn extends Piece {
 
   Pawn(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_pawn.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_pawn.png");
     } else {
-      image = Image.asset("assets/pieces/black_pawn.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_pawn.png");
     }
     upDown = (color == PieceColor.white) ? -1 : 1;
   }
@@ -205,9 +205,9 @@ class Pawn extends Piece {
 class Knight extends Piece {
   Knight(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_knight.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_knight.png");
     } else {
-      image = Image.asset("assets/pieces/black_knight.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_knight.png");
     }
   }
 
@@ -285,9 +285,9 @@ class Knight extends Piece {
 class Bishop extends Piece {
   Bishop(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_bishop.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_bishop.png");
     } else {
-      image = Image.asset("assets/pieces/black_bishop.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_bishop.png");
     }
   }
 
@@ -373,9 +373,9 @@ class Bishop extends Piece {
 class Rook extends Piece {
   Rook(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_rook.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_rook.png");
     } else {
-      image = Image.asset("assets/pieces/black_rook.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_rook.png");
     }
   }
 
@@ -441,9 +441,9 @@ class Rook extends Piece {
 class Queen extends Piece {
   Queen(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_queen.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_queen.png");
     } else {
-      image = Image.asset("assets/pieces/black_queen.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_queen.png");
     }
   }
 
@@ -582,9 +582,9 @@ class King extends Piece {
   bool isCastling = true;
   King(super.row, super.column, super.color) {
     if (color == PieceColor.white) {
-      image = Image.asset("assets/pieces/white_king.png");
+      image = Image.asset("assets/pieces/normal_pieces/white_king.png");
     } else {
-      image = Image.asset("assets/pieces/black_king.png");
+      image = Image.asset("assets/pieces/normal_pieces/black_king.png");
     }
   }
 
