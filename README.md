@@ -18,7 +18,7 @@ This is a project for univeristy classes called Grand Chess. It's an app for pla
     - [ ] Check
     - [ ] Checkmate
     - [ ] Stalemate
- - [ ] Ability to change looks of the chess board and pieces
+ - [X] Ability to change looks of the chess board and pieces
 
 3. Third Mile Stone
 
