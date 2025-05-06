@@ -12,14 +12,14 @@ class Board {
     );
 
     List<List<int>> tmpBoard = [
-      [5, 3, 2, 9, 10, 2, 3, 5],
+      [5, 3, 2, 9, 7, 2, 3, 5],
       [1, 1, 1, 1, 1, 1, 1, 1],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 1, 1, 1, 1, 1],
-      [5, 3, 2, 9, 10, 2, 3, 5],
+      [5, 3, 2, 9, 7, 2, 3, 5],
     ];
 
     for (int row = 0; row < 8; row++) {
@@ -47,7 +47,7 @@ class Board {
           board[row][column] = Rook(row, column, color);
         } else if (pieceValue == 9) {
           board[row][column] = Queen(row, column, color);
-        } else if (pieceValue == 10) {
+        } else if (pieceValue == 7) {
           board[row][column] = King(row, column, color);
         }
       }

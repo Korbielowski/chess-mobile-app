@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chess/model/game.dart';
 import 'package:chess/model/piece.dart';
 import 'package:chess/riverpod.dart';
@@ -5,6 +7,7 @@ import 'package:chess/settings_screen.dart';
 import 'package:chess/widgets/circle_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 
 class GameScreen extends ConsumerWidget {
   final Color lightPiecesColor;
@@ -25,24 +28,32 @@ class GameScreen extends ConsumerWidget {
     final tileSize = MediaQuery.of(context).size.width / 8;
     final game = ref.watch(gameProvider);
     return Scaffold(
-      bottomNavigationBar: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-        child: Icon(Icons.settings, color: Colors.white, size: 30.0),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => SettingsScreen(
-                    lightPiecesColor: lightPiecesColor,
-                    darkPiecesColor: darkPiecesColor,
-                    lightSquaresColor: lightSquaresColor,
-                    darkSquaresColor: darkSquaresColor,
-                    game: game,
-                  ),
-            ),
-          );
-        },
+      bottomNavigationBar: Row(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+            child: Icon(Icons.settings, color: Colors.white, size: 30.0),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => SettingsScreen(
+                        lightPiecesColor: lightPiecesColor,
+                        darkPiecesColor: darkPiecesColor,
+                        lightSquaresColor: lightSquaresColor,
+                        darkSquaresColor: darkSquaresColor,
+                        game: game,
+                      ),
+                ),
+              );
+            },
+          ),
+          ElevatedButton(
+            child: Text("Save game"),
+            onPressed: () => {_saveGameToFile(game)},
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -254,4 +265,44 @@ Widget _getBoard(
       ),
     ),
   );
+}
+
+Future<void> _saveGameToFile(Game game) async {
+  List<List<Piece>> board = game.board.board;
+  final dir = await getApplicationDocumentsDirectory();
+  final file = File('${dir.path}/pieces.txt');
+  file.writeAsStringSync('');
+  for (int row = 0; row < 8; row++) {
+    for (int column = 0; column < 8; column++) {
+      String c = "n";
+      if (board[row][column].color == PieceColor.white) {
+        c = "w";
+      } else if (board[row][column].color == PieceColor.black) {
+        c = "b";
+      }
+      if (board[row][column] is Pawn) {
+        file.writeAsStringSync("1$c,", mode: FileMode.append);
+      } else if (board[row][column] is Bishop) {
+        file.writeAsStringSync("2$c,", mode: FileMode.append);
+      } else if (board[row][column] is Knight) {
+        file.writeAsStringSync("3$c,", mode: FileMode.append);
+      } else if (board[row][column] is Rook) {
+        file.writeAsStringSync("5$c,", mode: FileMode.append);
+      } else if (board[row][column] is Queen) {
+        file.writeAsStringSync("9$c,", mode: FileMode.append);
+      } else if (board[row][column] is King) {
+        file.writeAsStringSync("7$c,", mode: FileMode.append);
+      } else {
+        file.writeAsStringSync("0$c,", mode: FileMode.append);
+      }
+    }
+    file.writeAsStringSync("\n", mode: FileMode.append);
+  }
+  final pFile = File('${dir.path}/which_player.txt');
+  pFile.writeAsStringSync('');
+  if (game.currentPlayer.color == PieceColor.white) {
+    pFile.writeAsStringSync("1");
+  } else {
+    pFile.writeAsStringSync("0");
+  }
 }
