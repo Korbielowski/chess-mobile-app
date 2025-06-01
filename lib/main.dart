@@ -1,4 +1,5 @@
 import 'package:chess/game_screen.dart';
+import 'package:chess/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,7 @@ class GrandChess extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Grand Chess",
       theme: ThemeData(colorScheme: ColorScheme.dark(), useMaterial3: true),
-      home: const GameScreen(),
+      home: const StartScreen(),
     );
   }
 }

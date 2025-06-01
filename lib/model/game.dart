@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chess/model/board.dart';
 import 'package:chess/model/piece.dart';
 import 'package:chess/model/player.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Game extends ChangeNotifier {
   Board board = Board();
@@ -105,5 +108,54 @@ class Game extends ChangeNotifier {
         }
       }
     }
+  }
+
+  Future<void> loadBoard() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/pieces.txt');
+
+    if (await file.exists()) {
+      final content = await file.readAsString();
+      print(content);
+      List<String> lines = content.split("\n");
+      for (int row = 0; row < 8; row++) {
+        List<String> pieces = lines[row].split(",");
+        for (int column = 0; column < 8; column++) {
+          String piece = pieces[column];
+          PieceColor color = PieceColor.noColor;
+          if (piece[1] == 'w') {
+            color = PieceColor.white;
+          } else if (piece[1] == 'b') {
+            color = PieceColor.black;
+          }
+          if (piece[0] == '0') {
+            board.board[row][column] = NoPiece(row, column, color);
+          } else if (piece[0] == '1') {
+            board.board[row][column] = Pawn(row, column, color);
+          } else if (piece[0] == '2') {
+            board.board[row][column] = Bishop(row, column, color);
+          } else if (piece[0] == '3') {
+            board.board[row][column] = Knight(row, column, color);
+          } else if (piece[0] == '5') {
+            board.board[row][column] = Rook(row, column, color);
+          } else if (piece[0] == '9') {
+            board.board[row][column] = Queen(row, column, color);
+          } else if (piece[0] == '7') {
+            board.board[row][column] = King(row, column, color);
+          }
+        }
+      }
+    }
+
+    final pFile = File('${dir.path}/which_player.txt');
+    if (await pFile.exists()) {
+      final pContent = await pFile.readAsString();
+      if (pContent[0] == '1') {
+        currentPlayer = players[0];
+      } else {
+        currentPlayer = players[1];
+      }
+    }
+    notifyListeners();
   }
 }

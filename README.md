@@ -22,6 +22,6 @@ This is a project for univeristy classes called Grand Chess. It's an app for pla
 
 3. Third Mile Stone
 
- - [ ] Saving of games to PGN (Portable Game Notation)
- - [ ] Loading of the last played game
+ - [X] Saving of games to PGN (Portable Game Notation)
+ - [X] Loading of the last played game
  - [ ] Game time
