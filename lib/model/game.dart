@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chess/end_screen.dart';
 import 'package:chess/model/board.dart';
 import 'package:chess/model/piece.dart';
 import 'package:chess/model/player.dart';
@@ -14,6 +15,11 @@ class Game extends ChangeNotifier {
   ];
   late Player currentPlayer;
   Pawn? promotionPawn;
+  Color lightPiecesColor = Colors.white;
+  Color darkPiecesColor = Colors.black;
+  Color lightSquaresColor = Colors.white;
+  Color darkSquaresColor = Colors.brown;
+
   Game() {
     currentPlayer = players[0];
     // TODO: Work on time feature in third mile stone, when other things are done
@@ -21,7 +27,7 @@ class Game extends ChangeNotifier {
   }
 
   void tileClicked(BuildContext context, int row, int column) {
-    board.tileClicked(this, row, column);
+    board.tileClicked(this, context, row, column);
     notifyListeners();
   }
 
@@ -45,9 +51,27 @@ class Game extends ChangeNotifier {
     // currentPlayer.timer.start();
   }
 
-  void endGame() {
+  void endGame(String message, BuildContext context) {
     // players[0].timer.stop();
     // players[1].timer.stop();
+    board = Board();
+    players = [Player(10, PieceColor.white), Player(10, PieceColor.black)];
+    currentPlayer = players[0];
+    promotionPawn = null;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => EndScreen(
+              message: message,
+              darkPiecesColor: darkPiecesColor,
+              lightPiecesColor: lightPiecesColor,
+              darkSquaresColor: darkSquaresColor,
+              lightSquaresColor: lightSquaresColor,
+            ),
+      ),
+    );
   }
 
   void updatePieceAssets(String directory) {
