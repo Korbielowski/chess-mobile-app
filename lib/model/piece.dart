@@ -16,7 +16,31 @@ abstract class Piece {
   bool showMarker = false;
 
   Piece(this.row, this.column, this.color);
-  void showPossibleMoves(Board board);
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board);
+  List<List<int>> getLegalMoves(Board board) {
+    List<List<int>> legalMoves = [];
+    var copiedBoard = board.copy();
+
+    for (var move in getPseudoLegalMoves(copiedBoard)) {
+      var tmpPiece = copiedBoard[move[0]][move[1]];
+      copiedBoard[move[0]][move[1]] = this;
+      copiedBoard[row][column] = NoPiece(row, column, PieceColor.noColor);
+      if (!isKingInCheck(color, copiedBoard)) {
+        legalMoves.add(move);
+      }
+      copiedBoard[row][column] = this;
+      copiedBoard[move[0]][move[1]] = tmpPiece;
+    }
+
+    return legalMoves;
+  }
+
+  void showPossibleMoves(Board board) {
+    for (var move in getLegalMoves(board)) {
+      board.board[move[0]][move[1]].showMarker = true;
+    }
+  }
+
   void movePiece(
     Game game,
     Piece piece,
@@ -86,6 +110,9 @@ abstract class Piece {
     }
     piece.updateMe(destinationRow, destinationColumn);
     board[destinationRow][destinationColumn] = piece;
+    // print(
+    //   "I am: $piece, my pos: ${piece.row}, ${piece.column}, my color: ${piece.color}",
+    // );
   }
 
   void updateMe(int destinationRow, int destinationColumn) {
@@ -104,6 +131,11 @@ class NoPiece extends Piece {
 
   @override
   void updateMe(int destinationRow, int destinationColumn) {}
+
+  @override
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    return [];
+  }
 
   // @override
   // void destroyPiece(Board board) {}
@@ -124,53 +156,56 @@ class Pawn extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
     // Determine whether to move up or down, determined by color of a piece
 
     // First move, able to move by two rows
     if (isFirstMove &&
-        board.board[row + upDown][column] is NoPiece &&
-        board.board[row + 2 * upDown][column] is NoPiece) {
-      board.board[row + 2 * upDown][column].showMarker = true;
+        board[row + upDown][column] is NoPiece &&
+        board[row + 2 * upDown][column] is NoPiece) {
+      moves.add([row + 2 * upDown, column]);
     }
 
     // Normal move by one row
     if (withinBounds(row + upDown, column) &&
-        board.board[row + upDown][column] is NoPiece) {
-      board.board[row + upDown][column].showMarker = true;
+        board[row + upDown][column] is NoPiece) {
+      moves.add([row + upDown, column]);
     }
 
     // Attack right
     if (withinBounds(row + upDown, column + 1) &&
-        board.board[row + upDown][column + 1] is! NoPiece &&
-        !isKing(board.board[row + upDown][column + 1]) &&
-        board.board[row + upDown][column + 1].color != color) {
-      board.board[row + upDown][column + 1].showMarker = true;
+        board[row + upDown][column + 1] is! NoPiece &&
+        // !isKing(board[row + upDown][column + 1]) &&
+        board[row + upDown][column + 1].color != color) {
+      moves.add([row + upDown, column + 1]);
     }
 
     // Attack left
     if (withinBounds(row + upDown, column - 1) &&
-        board.board[row + upDown][column - 1] is! NoPiece &&
-        !isKing(board.board[row + upDown][column - 1]) &&
-        board.board[row + upDown][column - 1].color != color) {
-      board.board[row + upDown][column - 1].showMarker = true;
+        board[row + upDown][column - 1] is! NoPiece &&
+        // !isKing(board[row + upDown][column - 1]) &&
+        board[row + upDown][column - 1].color != color) {
+      moves.add([row + upDown, column - 1]);
     }
 
     // En Passant right
-    if (withinBounds(row, column - 1) && board.board[row][column - 1] is Pawn) {
-      Pawn tmpPawn = board.board[row][column - 1] as Pawn;
+    if (withinBounds(row, column - 1) && board[row][column - 1] is Pawn) {
+      Pawn tmpPawn = board[row][column - 1] as Pawn;
       if (tmpPawn.isEnPassant && tmpPawn.color != color) {
-        board.board[row + upDown][column - 1].showMarker = true;
+        moves.add([row, column - 1]);
       }
     }
 
     // En Passant left
-    if (withinBounds(row, column + 1) && board.board[row][column + 1] is Pawn) {
-      Pawn tmpPawn = board.board[row][column + 1] as Pawn;
+    if (withinBounds(row, column + 1) && board[row][column + 1] is Pawn) {
+      Pawn tmpPawn = board[row][column + 1] as Pawn;
       if (tmpPawn.isEnPassant && tmpPawn.color != color) {
-        board.board[row + upDown][column + 1].showMarker = true;
+        moves.add([row, column + 1]);
       }
     }
+
+    return moves;
   }
 
   @override
@@ -212,70 +247,74 @@ class Knight extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
+
     if (withinBounds(row + 2, column + 1) &&
-        (board.board[row + 2][column + 1] is NoPiece ||
-            (board.board[row + 2][column + 1] is! NoPiece &&
-                !isKing(board.board[row + 2][column + 1]) &&
-                board.board[row + 2][column + 1].color != color))) {
-      board.board[row + 2][column + 1].showMarker = true;
+        (board[row + 2][column + 1] is NoPiece ||
+            (board[row + 2][column + 1] is! NoPiece &&
+                // !isKing(board[row + 2][column + 1]) &&
+                board[row + 2][column + 1].color != color))) {
+      moves.add([row + 2, column + 1]);
     }
 
     if (withinBounds(row + 2, column - 1) &&
-        (board.board[row + 2][column - 1] is NoPiece ||
-            (board.board[row + 2][column - 1] is! NoPiece &&
-                !isKing(board.board[row + 2][column - 1]) &&
-                board.board[row + 2][column - 1].color != color))) {
-      board.board[row + 2][column - 1].showMarker = true;
+        (board[row + 2][column - 1] is NoPiece ||
+            (board[row + 2][column - 1] is! NoPiece &&
+                // !isKing(board[row + 2][column - 1]) &&
+                board[row + 2][column - 1].color != color))) {
+      moves.add([row + 2, column - 1]);
     }
 
     if (withinBounds(row + 1, column + 2) &&
-        (board.board[row + 1][column + 2] is NoPiece ||
-            (board.board[row + 1][column + 2] is! NoPiece &&
-                !isKing(board.board[row + 1][column + 2]) &&
-                board.board[row + 1][column + 2].color != color))) {
-      board.board[row + 1][column + 2].showMarker = true;
+        (board[row + 1][column + 2] is NoPiece ||
+            (board[row + 1][column + 2] is! NoPiece &&
+                // !isKing(board[row + 1][column + 2]) &&
+                board[row + 1][column + 2].color != color))) {
+      moves.add([row + 1, column + 2]);
     }
 
     if (withinBounds(row - 1, column + 2) &&
-        (board.board[row - 1][column + 2] is NoPiece ||
-            (board.board[row - 1][column + 2] is! NoPiece &&
-                !isKing(board.board[row - 1][column + 2]) &&
-                board.board[row - 1][column + 2].color != color))) {
-      board.board[row - 1][column + 2].showMarker = true;
+        (board[row - 1][column + 2] is NoPiece ||
+            (board[row - 1][column + 2] is! NoPiece &&
+                // !isKing(board[row - 1][column + 2]) &&
+                board[row - 1][column + 2].color != color))) {
+      moves.add([row - 1, column + 2]);
     }
 
     if (withinBounds(row - 2, column + 1) &&
-        (board.board[row - 2][column + 1] is NoPiece ||
-            (board.board[row - 2][column + 1] is! NoPiece &&
-                !isKing(board.board[row - 2][column + 1]) &&
-                board.board[row - 2][column + 1].color != color))) {
-      board.board[row - 2][column + 1].showMarker = true;
+        (board[row - 2][column + 1] is NoPiece ||
+            (board[row - 2][column + 1] is! NoPiece &&
+                // !isKing(board[row - 2][column + 1]) &&
+                board[row - 2][column + 1].color != color))) {
+      moves.add([row - 2, column + 1]);
     }
 
     if (withinBounds(row - 2, column - 1) &&
-        (board.board[row - 2][column - 1] is NoPiece ||
-            (board.board[row - 2][column - 1] is! NoPiece &&
-                !isKing(board.board[row - 2][column - 1]) &&
-                board.board[row - 2][column - 1].color != color))) {
-      board.board[row - 2][column - 1].showMarker = true;
+        (board[row - 2][column - 1] is NoPiece ||
+            (board[row - 2][column - 1] is! NoPiece &&
+                // !isKing(board[row - 2][column - 1]) &&
+                board[row - 2][column - 1].color != color))) {
+      moves.add([row - 2, column - 1]);
     }
 
     if (withinBounds(row - 1, column - 2) &&
-        (board.board[row - 1][column - 2] is NoPiece ||
-            (board.board[row - 1][column - 2] is! NoPiece &&
-                !isKing(board.board[row - 1][column - 2]) &&
-                board.board[row - 1][column - 2].color != color))) {
-      board.board[row - 1][column - 2].showMarker = true;
+        (board[row - 1][column - 2] is NoPiece ||
+            (board[row - 1][column - 2] is! NoPiece &&
+                // !isKing(board[row - 1][column - 2]) &&
+                board[row - 1][column - 2].color != color))) {
+      moves.add([row - 1, column - 2]);
     }
 
     if (withinBounds(row + 1, column - 2) &&
-        (board.board[row + 1][column - 2] is NoPiece ||
-            (board.board[row + 1][column - 2] is! NoPiece &&
-                !isKing(board.board[row + 1][column - 2]) &&
-                board.board[row + 1][column - 2].color != color))) {
-      board.board[row + 1][column - 2].showMarker = true;
+        (board[row + 1][column - 2] is NoPiece ||
+            (board[row + 1][column - 2] is! NoPiece &&
+                // !isKing(board[row + 1][column - 2]) &&
+                board[row + 1][column - 2].color != color))) {
+      moves.add([row + 1, column - 2]);
     }
+
+    return moves;
   }
 
   // @override
@@ -292,17 +331,18 @@ class Bishop extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
     int tColumn = column + 1;
     int tRow = row + 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -315,12 +355,12 @@ class Bishop extends Piece {
     tColumn = column - 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -333,12 +373,12 @@ class Bishop extends Piece {
     tColumn = column + 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -351,12 +391,12 @@ class Bishop extends Piece {
     tColumn = column - 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -364,6 +404,7 @@ class Bishop extends Piece {
       tRow--;
       tColumn--;
     }
+    return moves;
   }
 
   // @override
@@ -380,14 +421,16 @@ class Rook extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
+
     for (int tRow = row + 1; withinBounds(tRow, column); tRow++) {
-      if (board.board[tRow][column] is NoPiece) {
-        board.board[tRow][column].showMarker = true;
-      } else if (board.board[tRow][column] is! NoPiece &&
-          !isKing(board.board[tRow][column]) &&
-          board.board[tRow][column].color != color) {
-        board.board[tRow][column].showMarker = true;
+      if (board[tRow][column] is NoPiece) {
+        moves.add([tRow, column]);
+      } else if (board[tRow][column] is! NoPiece &&
+          // !isKing(board[tRow][column]) &&
+          board[tRow][column].color != color) {
+        moves.add([tRow, column]);
         break;
       } else {
         break;
@@ -395,12 +438,12 @@ class Rook extends Piece {
     }
 
     for (int tRow = row - 1; withinBounds(tRow, column); tRow--) {
-      if (board.board[tRow][column] is NoPiece) {
-        board.board[tRow][column].showMarker = true;
-      } else if (board.board[tRow][column] is! NoPiece &&
-          !isKing(board.board[tRow][column]) &&
-          board.board[tRow][column].color != color) {
-        board.board[tRow][column].showMarker = true;
+      if (board[tRow][column] is NoPiece) {
+        moves.add([tRow, column]);
+      } else if (board[tRow][column] is! NoPiece &&
+          // !isKing(board[tRow][column]) &&
+          board[tRow][column].color != color) {
+        moves.add([tRow, column]);
         break;
       } else {
         break;
@@ -408,12 +451,12 @@ class Rook extends Piece {
     }
 
     for (int tColumn = column + 1; withinBounds(row, tColumn); tColumn++) {
-      if (board.board[row][tColumn] is NoPiece) {
-        board.board[row][tColumn].showMarker = true;
-      } else if (board.board[row][tColumn] is! NoPiece &&
-          !isKing(board.board[row][tColumn]) &&
-          board.board[row][tColumn].color != color) {
-        board.board[row][tColumn].showMarker = true;
+      if (board[row][tColumn] is NoPiece) {
+        moves.add([row, tColumn]);
+      } else if (board[row][tColumn] is! NoPiece &&
+          // !isKing(board[row][tColumn]) &&
+          board[row][tColumn].color != color) {
+        moves.add([row, tColumn]);
         break;
       } else {
         break;
@@ -421,17 +464,19 @@ class Rook extends Piece {
     }
 
     for (int tColumn = column - 1; withinBounds(row, tColumn); tColumn--) {
-      if (board.board[row][tColumn] is NoPiece) {
-        board.board[row][tColumn].showMarker = true;
-      } else if (board.board[row][tColumn] is! NoPiece &&
-          !isKing(board.board[row][tColumn]) &&
-          board.board[row][tColumn].color != color) {
-        board.board[row][tColumn].showMarker = true;
+      if (board[row][tColumn] is NoPiece) {
+        moves.add([row, tColumn]);
+      } else if (board[row][tColumn] is! NoPiece &&
+          // !isKing(board[row][tColumn]) &&
+          board[row][tColumn].color != color) {
+        moves.add([row, tColumn]);
         break;
       } else {
         break;
       }
     }
+
+    return moves;
   }
 
   // @override
@@ -448,14 +493,16 @@ class Queen extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
+
     for (int tRow = row + 1; withinBounds(tRow, column); tRow++) {
-      if (board.board[tRow][column] is NoPiece) {
-        board.board[tRow][column].showMarker = true;
-      } else if (board.board[tRow][column] is! NoPiece &&
-          !isKing(board.board[tRow][column]) &&
-          board.board[tRow][column].color != color) {
-        board.board[tRow][column].showMarker = true;
+      if (board[tRow][column] is NoPiece) {
+        moves.add([tRow, column]);
+      } else if (board[tRow][column] is! NoPiece &&
+          // !isKing(board[tRow][column]) &&
+          board[tRow][column].color != color) {
+        moves.add([tRow, column]);
         break;
       } else {
         break;
@@ -463,12 +510,12 @@ class Queen extends Piece {
     }
 
     for (int tRow = row - 1; withinBounds(tRow, column); tRow--) {
-      if (board.board[tRow][column] is NoPiece) {
-        board.board[tRow][column].showMarker = true;
-      } else if (board.board[tRow][column] is! NoPiece &&
-          !isKing(board.board[tRow][column]) &&
-          board.board[tRow][column].color != color) {
-        board.board[tRow][column].showMarker = true;
+      if (board[tRow][column] is NoPiece) {
+        moves.add([tRow, column]);
+      } else if (board[tRow][column] is! NoPiece &&
+          // !isKing(board[tRow][column]) &&
+          board[tRow][column].color != color) {
+        moves.add([tRow, column]);
         break;
       } else {
         break;
@@ -476,12 +523,12 @@ class Queen extends Piece {
     }
 
     for (int tColumn = column + 1; withinBounds(row, tColumn); tColumn++) {
-      if (board.board[row][tColumn] is NoPiece) {
-        board.board[row][tColumn].showMarker = true;
-      } else if (board.board[row][tColumn] is! NoPiece &&
-          !isKing(board.board[row][tColumn]) &&
-          board.board[row][tColumn].color != color) {
-        board.board[row][tColumn].showMarker = true;
+      if (board[row][tColumn] is NoPiece) {
+        moves.add([row, tColumn]);
+      } else if (board[row][tColumn] is! NoPiece &&
+          // !isKing(board[row][tColumn]) &&
+          board[row][tColumn].color != color) {
+        moves.add([row, tColumn]);
         break;
       } else {
         break;
@@ -489,12 +536,12 @@ class Queen extends Piece {
     }
 
     for (int tColumn = column - 1; withinBounds(row, tColumn); tColumn--) {
-      if (board.board[row][tColumn] is NoPiece) {
-        board.board[row][tColumn].showMarker = true;
-      } else if (board.board[row][tColumn] is! NoPiece &&
-          !isKing(board.board[row][tColumn]) &&
-          board.board[row][tColumn].color != color) {
-        board.board[row][tColumn].showMarker = true;
+      if (board[row][tColumn] is NoPiece) {
+        moves.add([row, tColumn]);
+      } else if (board[row][tColumn] is! NoPiece &&
+          // !isKing(board[row][tColumn]) &&
+          board[row][tColumn].color != color) {
+        moves.add([row, tColumn]);
         break;
       } else {
         break;
@@ -505,12 +552,12 @@ class Queen extends Piece {
     int tRow = row + 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -523,12 +570,12 @@ class Queen extends Piece {
     tColumn = column - 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -541,12 +588,12 @@ class Queen extends Piece {
     tColumn = column + 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -559,12 +606,12 @@ class Queen extends Piece {
     tColumn = column - 1;
 
     while (withinBounds(tRow, tColumn)) {
-      if (board.board[tRow][tColumn] is NoPiece) {
-        board.board[tRow][tColumn].showMarker = true;
-      } else if (board.board[tRow][tColumn] is! NoPiece &&
-          !isKing(board.board[tRow][tColumn]) &&
-          board.board[tRow][tColumn].color != color) {
-        board.board[tRow][tColumn].showMarker = true;
+      if (board[tRow][tColumn] is NoPiece) {
+        moves.add([tRow, tColumn]);
+      } else if (board[tRow][tColumn] is! NoPiece &&
+          // !isKing(board[tRow][tColumn]) &&
+          board[tRow][tColumn].color != color) {
+        moves.add([tRow, tColumn]);
         break;
       } else {
         break;
@@ -572,6 +619,8 @@ class Queen extends Piece {
       tRow--;
       tColumn--;
     }
+
+    return moves;
   }
 
   // @override
@@ -589,50 +638,72 @@ class King extends Piece {
   }
 
   @override
-  void showPossibleMoves(Board board) {
+  List<List<int>> getLegalMoves(Board board) {
+    var pseudoMoves = getPseudoLegalMoves(board.board);
+    List<List<int>> legalMoves = [];
+
+    for (var move in pseudoMoves) {
+      var copiedBoard = board.copy();
+      copiedBoard[move[0]][move[1]] = this;
+      copiedBoard[row][column] = NoPiece(row, column, PieceColor.noColor);
+
+      if (!isSquareAttacked(move[0], move[1], color, copiedBoard)) {
+        legalMoves.add(move);
+      }
+    }
+
+    return legalMoves;
+  }
+
+  @override
+  List<List<int>> getPseudoLegalMoves(List<List<Piece>> board) {
+    List<List<int>> moves = [];
+
     for (int tRow = -1; tRow <= 1; tRow++) {
       for (int tColumn = -1; tColumn <= 1; tColumn++) {
         if (withinBounds(row + tRow, column + tColumn) &&
-            (board.board[row + tRow][column + tColumn] is NoPiece ||
-                (board.board[row + tRow][column + tColumn] is! NoPiece &&
-                    board.board[row + tRow][column + tColumn].color !=
-                        color)) &&
+            (board[row + tRow][column + tColumn] is NoPiece ||
+                (board[row + tRow][column + tColumn] is! NoPiece &&
+                    board[row + tRow][column + tColumn].color != color)) &&
             !isKingAround(row + tRow, column + tColumn, board)) {
-          board.board[row + tRow][column + tColumn].showMarker = true;
+          moves.add([row + tRow, column + tColumn]);
         }
       }
     }
 
     if (isCastling == true) {
       for (int tColumn = column + 1; tColumn <= 7; tColumn++) {
-        if (board.board[row][tColumn] is! NoPiece && tColumn < 7) {
+        if (board[row][tColumn] is! NoPiece && tColumn < 7) {
           break;
         }
-        if (board.board[row][tColumn] is Rook &&
-            board.board[row][tColumn].color == color) {
-          board.board[row][tColumn].showMarker = true;
+        if (board[row][tColumn] is Rook && board[row][tColumn].color == color) {
+          moves.add([row, tColumn]);
         }
       }
       for (int tColumn = column - 1; tColumn >= 0; tColumn--) {
-        if (board.board[row][tColumn] is! NoPiece && tColumn > 0) {
+        if (board[row][tColumn] is! NoPiece && tColumn > 0) {
           break;
         }
-        if (board.board[row][tColumn] is Rook &&
-            board.board[row][tColumn].color == color) {
-          board.board[row][tColumn].showMarker = true;
+        if (board[row][tColumn] is Rook && board[row][tColumn].color == color) {
+          moves.add([row, tColumn]);
         }
       }
     }
+
+    return moves;
   }
 
   // Naive approach, probably there is a better way to do this
-  bool isKingAround(int rowToCheck, int columnToCheck, Board board) {
+  bool isKingAround(
+    int rowToCheck,
+    int columnToCheck,
+    List<List<Piece>> board,
+  ) {
     for (int tRow = -1; tRow <= 1; tRow++) {
       for (int tColumn = -1; tColumn <= 1; tColumn++) {
         if (withinBounds(rowToCheck + tRow, columnToCheck + tColumn) &&
-            board.board[rowToCheck + tRow][columnToCheck + tColumn] is King &&
-            board.board[rowToCheck + tRow][columnToCheck + tColumn].color !=
-                color) {
+            board[rowToCheck + tRow][columnToCheck + tColumn] is King &&
+            board[rowToCheck + tRow][columnToCheck + tColumn].color != color) {
           return true;
         }
       }
@@ -657,13 +728,73 @@ bool withinBounds(int row, int column) {
   return false;
 }
 
-bool isKing(Piece piece) {
-  if (piece is King) {
-    return true;
-  }
-  return false;
-}
+// bool isKing(Piece piece) {
+//   if (piece is King) {
+//     return true;
+//   }
+//   return false;
+// }
 
 Future<void> playSound(String path) async {
   await player.play(AssetSource(path));
+}
+
+bool isKingInCheck(PieceColor color, List<List<Piece>> board) {
+  King? king;
+
+  for (var row in board) {
+    for (var piece in row) {
+      if (piece is King && piece.color == color) {
+        king = piece;
+        break;
+      }
+    }
+  }
+
+  if (king == null) {
+    // print("King NOT in check 1");
+    return false;
+  }
+
+  for (var row in board) {
+    for (var piece in row) {
+      // print("from $piece and color: ${piece.color}");
+      if (piece.color != color && piece.color != PieceColor.noColor) {
+        var pseudoMoves = piece.getPseudoLegalMoves(board);
+        // print("Pseudo moves: $piece ${piece.color} $pseudoMoves");
+        // print("King: ${king.row}, ${king.column}, ${king.color}");
+        for (var move in pseudoMoves) {
+          if (move.isNotEmpty &&
+              move[0] == king.row &&
+              move[1] == king.column) {
+            // print("King in check");
+            return true;
+          }
+        }
+      }
+    }
+  }
+  // print("King NOT in check 2");
+  return false;
+}
+
+bool isSquareAttacked(
+  int targetRow,
+  int targetCol,
+  PieceColor kingColor,
+  List<List<Piece>> board,
+) {
+  for (var row in board) {
+    for (var piece in row) {
+      if (piece.color != kingColor && piece.color != PieceColor.noColor) {
+        var enemyMoves = piece.getPseudoLegalMoves(board);
+        for (var move in enemyMoves) {
+          if (move[0] == targetRow && move[1] == targetCol) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
 }

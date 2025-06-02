@@ -1,5 +1,6 @@
 import 'package:chess/model/game.dart';
 import 'package:chess/model/piece.dart';
+import 'package:flutter/material.dart';
 
 class Board {
   late List<List<Piece>> board;
@@ -64,17 +65,15 @@ class Board {
     }
   }
 
-  void tileClicked(Game game, int row, int column) {
+  void tileClicked(Game game, BuildContext context, int row, int column) {
     Piece piece = board[row][column];
-    print(
-      "row: $row, column: $column, Prow: ${game.promotionPawn?.row}, Pcolumn: ${game.promotionPawn?.column}",
-    );
+
     if (game.promotionPawn != null &&
         (piece.row != game.promotionPawn?.row ||
             piece.column != game.promotionPawn?.column)) {
-      print("We are skipping");
       return;
     }
+
     if (piece.showMarker == false && game.currentPlayer.color != piece.color) {
       zeroPossibleMoves();
       return;
@@ -94,6 +93,55 @@ class Board {
       piece.movePiece(game, selectedPiece, row, column);
       zeroPossibleMoves();
       game.switchPlayer();
+    }
+
+    handleCheckmateOrStalemate(game, context);
+  }
+
+  List<List<Piece>> copy() {
+    List<List<Piece>> copiedBoard = List.generate(
+      8,
+      (_) => List<Piece>.filled(8, NoPiece(0, 0, PieceColor.noColor)),
+    );
+
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        copiedBoard[row][col] = board[row][col];
+      }
+    }
+
+    return copiedBoard;
+  }
+
+  void handleCheckmateOrStalemate(Game game, BuildContext context) {
+    PieceColor currentColor = game.currentPlayer.color;
+
+    bool isInCheck = isKingInCheck(currentColor, board);
+    bool hasLegalMove = false;
+
+    for (var row in board) {
+      for (var piece in row) {
+        if (piece.color == currentColor) {
+          var legalMoves = piece.getLegalMoves(this);
+          if (legalMoves.isNotEmpty) {
+            hasLegalMove = true;
+            break;
+          }
+        }
+      }
+      if (hasLegalMove) break;
+    }
+
+    if (isInCheck && !hasLegalMove) {
+      if (game.currentPlayer.color == PieceColor.black) {
+        game.endGame("Checkmate! White wins", context);
+      } else {
+        game.endGame("Checkmate! Black wins", context);
+      }
+    } else if (!isInCheck && !hasLegalMove) {
+      game.endGame("Stalemate! It's a draw.", context);
+    } else if (isInCheck && hasLegalMove) {
+      print("Check!");
     }
   }
 }
