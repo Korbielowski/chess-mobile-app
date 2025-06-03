@@ -22,37 +22,45 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      bottomNavigationBar: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-        child: const Text(style: TextStyle(color: Colors.black), 'Go to board'),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => GameScreen(
-                    lightPiecesColor: lightPiecesColor,
-                    darkPiecesColor: darkPiecesColor,
-                    lightSquaresColor: lightSquaresColor,
-                    darkSquaresColor: darkSquaresColor,
-                  ),
-            ),
-          );
-        },
+      bottomNavigationBar: SafeArea(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+          child: const Text(
+            style: TextStyle(color: Colors.black),
+            'Go to board',
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => GameScreen(
+                      lightPiecesColor: lightPiecesColor,
+                      darkPiecesColor: darkPiecesColor,
+                      lightSquaresColor: lightSquaresColor,
+                      darkSquaresColor: darkSquaresColor,
+                    ),
+              ),
+            );
+          },
+        ),
       ),
       body: Column(
         children: [
+          Text("Board Colors"),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     lightSquaresColor = Colors.white;
                     darkSquaresColor = Colors.brown;
                   },
-                  child: Text("Default"),
+                  child: Text(style: TextStyle(color: Colors.black), "Default"),
                 ),
+                SizedBox(width: 16),
                 ColoredBox(
                   color: Colors.white,
                   child: SizedBox(width: 20, height: 20),
@@ -65,16 +73,21 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     lightSquaresColor = Colors.white;
                     darkSquaresColor = Colors.lightGreen;
                   },
-                  child: Text("Template 1"),
+                  child: Text(
+                    style: TextStyle(color: Colors.black),
+                    "Template 1",
+                  ),
                 ),
+                SizedBox(width: 16),
                 ColoredBox(
                   color: Colors.white,
                   child: SizedBox(width: 20, height: 20),
@@ -87,16 +100,21 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     lightSquaresColor = Colors.greenAccent;
                     darkSquaresColor = Colors.red;
                   },
-                  child: Text("Template 2"),
+                  child: Text(
+                    style: TextStyle(color: Colors.black),
+                    "Template 2",
+                  ),
                 ),
+                SizedBox(width: 16),
                 ColoredBox(
                   color: Colors.greenAccent,
                   child: SizedBox(width: 20, height: 20),
@@ -109,16 +127,21 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     lightSquaresColor = Colors.lightBlue;
                     darkSquaresColor = Colors.blueAccent;
                   },
-                  child: Text("Template 3"),
+                  child: Text(
+                    style: TextStyle(color: Colors.black),
+                    "Template 3",
+                  ),
                 ),
+                SizedBox(width: 16),
                 ColoredBox(
                   color: Colors.lightBlue,
                   child: SizedBox(width: 20, height: 20),
@@ -130,28 +153,37 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
+          Text("Pieces appearance"),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     game.updatePieceAssets("normal_pieces");
                   },
-                  child: Text("Default pieces"),
+                  child: Text(
+                    style: TextStyle(color: Colors.black),
+                    "Default pieces",
+                  ),
                 ),
               ],
             ),
           ),
           Container(
-            color: Colors.grey,
+            color: Colors.blueGrey,
             child: Row(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: () {
                     game.updatePieceAssets("fairy_pieces");
                   },
-                  child: Text("Fairy pieces"),
+                  child: Text(
+                    style: TextStyle(color: Colors.black),
+                    "Fairy pieces",
+                  ),
                 ),
               ],
             ),

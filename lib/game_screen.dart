@@ -28,32 +28,36 @@ class GameScreen extends ConsumerWidget {
     final tileSize = MediaQuery.of(context).size.width / 8;
     final game = ref.watch(gameProvider);
     return Scaffold(
-      bottomNavigationBar: Row(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-            child: Icon(Icons.settings, color: Colors.white, size: 30.0),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => SettingsScreen(
-                        lightPiecesColor: lightPiecesColor,
-                        darkPiecesColor: darkPiecesColor,
-                        lightSquaresColor: lightSquaresColor,
-                        darkSquaresColor: darkSquaresColor,
-                        game: game,
-                      ),
-                ),
-              );
-            },
-          ),
-          ElevatedButton(
-            child: Text("Save game"),
-            onPressed: () => {_saveGameToFile(game)},
-          ),
-        ],
+      bottomNavigationBar: SafeArea(
+        child: Row(
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+              child: Icon(Icons.settings, color: Colors.white, size: 30.0),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => SettingsScreen(
+                          lightPiecesColor: lightPiecesColor,
+                          darkPiecesColor: darkPiecesColor,
+                          lightSquaresColor: lightSquaresColor,
+                          darkSquaresColor: darkSquaresColor,
+                          game: game,
+                        ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(width: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+              onPressed: () => {_saveGameToFile(game)},
+              child: Text(style: TextStyle(color: Colors.black), "Save game"),
+            ),
+          ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
