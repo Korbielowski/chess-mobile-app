@@ -23,6 +23,17 @@ class Board {
       [5, 3, 2, 9, 7, 2, 3, 5],
     ];
 
+    // List<List<int>> tmpBoard = [
+    //   [7, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 7, 0, 0, 0, 9],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    // ];
+
     for (int row = 0; row < 8; row++) {
       for (int column = 0; column < 8; column++) {
         int pieceValue = tmpBoard[row][column];
@@ -86,12 +97,14 @@ class Board {
     } else if (piece is! NoPiece && piece.showMarker == true) {
       piece.movePiece(game, selectedPiece, row, column);
       zeroPossibleMoves();
+      clearEnPassant(game);
       game.switchPlayer();
     } else if (piece is NoPiece && piece.showMarker == false) {
       zeroPossibleMoves();
     } else if (piece is NoPiece && piece.showMarker == true) {
       piece.movePiece(game, selectedPiece, row, column);
       zeroPossibleMoves();
+      clearEnPassant(game);
       game.switchPlayer();
     }
 
@@ -142,6 +155,18 @@ class Board {
       game.endGame("Stalemate! It's a draw.", context);
     } else if (isInCheck && hasLegalMove) {
       print("Check!");
+    }
+  }
+
+  void clearEnPassant(Game game) {
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        if (board[row][col] is Pawn &&
+            board[row][col].color != game.currentPlayer.color) {
+          Pawn pawn = board[row][col] as Pawn;
+          pawn.isEnPassant = false;
+        }
+      }
     }
   }
 }

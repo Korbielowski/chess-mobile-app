@@ -193,7 +193,7 @@ class Pawn extends Piece {
     if (withinBounds(row, column - 1) && board[row][column - 1] is Pawn) {
       Pawn tmpPawn = board[row][column - 1] as Pawn;
       if (tmpPawn.isEnPassant && tmpPawn.color != color) {
-        moves.add([row, column - 1]);
+        moves.add([row + upDown, column - 1]);
       }
     }
 
@@ -201,7 +201,7 @@ class Pawn extends Piece {
     if (withinBounds(row, column + 1) && board[row][column + 1] is Pawn) {
       Pawn tmpPawn = board[row][column + 1] as Pawn;
       if (tmpPawn.isEnPassant && tmpPawn.color != color) {
-        moves.add([row, column + 1]);
+        moves.add([row + upDown, column + 1]);
       }
     }
 
